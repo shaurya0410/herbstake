@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 
-const TopStakers = ({ topStakers }) => {
+const TopStaked = ({ topstakers }) => {
   // console.log(topStakers);
   return (
     <div className="top_box">
-      {topStakers.sort((a, b) => b.amount - a.amount).map((element,index) => {
+      {topstakers.sort((a, b) => b.amount - a.amount).map((element,index) => {
         return (
           <div className="top_items" key={element.owner}>
             <span className="top_index">{index+1}</span>
@@ -21,4 +21,4 @@ const TopStakers = ({ topStakers }) => {
   );
 };
 
-export default TopStakers;
+export default TopStaked;

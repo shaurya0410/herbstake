@@ -3,17 +3,17 @@ import React, { useState } from "react";
 import Calculator from "./components/Calculator";
 import Button from "./components/Button";
 import Modal from "./components/Modal";
-import TopStakers from "./components/TopStakers";
+import TopStaked from "./components/TopStaked";
 import * as waxjs from "@waxio/waxjs/dist";
 const wax = new waxjs.WaxJS({
   rpcEndpoint: "https://wax.greymass.com",
 });
 
-const page = () => {
+const Page = () => {
   const [type, setType] = useState("");
   const [modal, setModal] = useState(false);
   const [isuser, setIsUser] = useState(false);
-
+  const [topstakers, setTopstakers] = useState([]);
   const [user, setUser] = useState({
     owner: "",
     staked_amount: "0.0000 HERB",
@@ -24,25 +24,7 @@ const page = () => {
     balance: "0",
   });
 
-  const [topStakers, setTopStakers] = useState([]);
 
-  function calculateClaim(quantity, last_claim) {
-    // console.log(quantity);
-    let asset = quantity.split(" ");
-    let staked_amount = parseFloat(asset[0]);
-    // console.log(staked_amount);
-    let current_time = new Date().getTime();
-    let elapsed_time = (current_time - last_claim) / 1000;
-    // const apy = 0.1; // 10% APY
-    const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
-    let claim_amount = (
-      staked_amount *
-      reward_per_second *
-      elapsed_time
-    ).toFixed(4);
-    // console.log(claim_amount);
-    return claim_amount;
-  }
   async function getData(owner) {
     try {
       let [staked, unstaked, balance, top] = await Promise.all([
@@ -58,7 +40,7 @@ const page = () => {
         balance = 0;
       }
       if (top != -1) {
-        setTopStakers(top);
+        setTopstakers(top);
       }
       if (staked != -1) {
         let last_claim = new Date(staked.last_claim + "z").getTime();
@@ -89,7 +71,7 @@ const page = () => {
   }
 
   function reset() {
-    topStakers([]);
+    setTopstakers([]);
     setUser({
       owner: "",
       staked_amount: "0.0000 HERB",
@@ -254,7 +236,7 @@ const page = () => {
         }}
       />
       <h2>Top Stakers</h2>
-      <TopStakers topStakers={topStakers} />
+      <TopStaked topstakers={topstakers} />
       {modal && (
         <Modal
           setModal={setModal}
@@ -268,7 +250,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
 
 //functions
 let contract = "stake.herb";
@@ -440,3 +422,21 @@ const herb_balance = async (owner) => {
     return -1;
   }
 };
+
+function calculateClaim(quantity, last_claim) {
+  // console.log(quantity);
+  let asset = quantity.split(" ");
+  let staked_amount = parseFloat(asset[0]);
+  // console.log(staked_amount);
+  let current_time = new Date().getTime();
+  let elapsed_time = (current_time - last_claim) / 1000;
+  // const apy = 0.1; // 10% APY
+  const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
+  let claim_amount = (
+    staked_amount *
+    reward_per_second *
+    elapsed_time
+  ).toFixed(4);
+  // console.log(claim_amount);
+  return claim_amount;
+}
