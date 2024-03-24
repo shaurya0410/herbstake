@@ -9,7 +9,7 @@ const wax = new waxjs.WaxJS({
   rpcEndpoint: "https://wax.greymass.com",
 });
 
-const Page = () => {
+const MainPage = () => {
   const [type, setType] = useState("");
   const [modal, setModal] = useState(false);
   const [isuser, setIsUser] = useState(false);
@@ -79,7 +79,7 @@ const Page = () => {
       last_claim: "0",
       balance: "0",
       unstaked_amount: "0.0000 HERB",
-      unlock_cooldown: "0",
+      unlock_cooldown: -10,
     });
   }
 
@@ -250,7 +250,7 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default MainPage;
 
 //functions
 let contract = "stake.herb";
