@@ -1,5 +1,4 @@
 "use client";
-import { useAmp } from "next/amp";
 import React from "react";
 
 const TopStakers = ({ topStakers }) => {
