@@ -72,6 +72,7 @@ const MainPage = () => {
           owner: unstaked.owner,
           unstaked_amount: unstaked.quantity,
           unlock_cooldown: unlock_cooldown,
+          balance: balance,
         }));
       }
     } catch (error) {
