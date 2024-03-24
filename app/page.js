@@ -7,6 +7,7 @@ import TopStaked from "./components/TopStaked";
 import * as waxjs from "@waxio/waxjs/dist";
 const wax = new waxjs.WaxJS({
   rpcEndpoint: "https://wax.greymass.com",
+  tryAutoLogin: false,
 });
 
 const MainPage = () => {
@@ -41,6 +42,13 @@ const MainPage = () => {
       }
       if (top != -1) {
         setTopstakers(top);
+      }
+
+      if(staked == -1 && unstaked == -1){
+        setUser((previous_obj) => ({
+          ...previous_obj,
+          owner: owner,
+        }));
       }
       if (staked != -1) {
         let last_claim = new Date(staked.last_claim + "z").getTime();
@@ -117,14 +125,14 @@ const MainPage = () => {
                 const isAutoLoginAvailable = await wax.isAutoLoginAvailable();
                 if (isAutoLoginAvailable) {
                   setIsUser(true);
-                  alert(`${wax.userAccount} connected`);
+                  // alert(`${wax.userAccount} connected`);
                   getData(wax.userAccount);
                 } else {
                   const nonce = "herbstaking";
                   const userAccount = await wax.login(nonce);
                   if (wax.proofVerified) {
                     setIsUser(true);
-                    alert(`${userAccount} connected`);
+                    // alert(`${userAccount} connected`);
                     getData(userAccount);
                   }
                 }
@@ -181,7 +189,7 @@ const MainPage = () => {
           />
         </div>
 
-        <div className="unstake_box">
+       { <div className="unstake_box">
           <span className="title">Unstaked</span>
           <span className="amount">{user.unstaked_amount}</span>
 
@@ -199,7 +207,7 @@ const MainPage = () => {
               isuser={isuser}
             />
           </div>
-        </div>
+        </div>}
         {/* </div> */}
         {user.unlock_cooldown > 0 && (
           <div className="redeem_box">

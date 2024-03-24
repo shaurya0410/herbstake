@@ -254,7 +254,7 @@ h2{
   .wallet_box{
     position: absolute;
     top: 0rem;
-    right: 1rem;
+    right: 0.5rem;
     margin: 0.5rem;
     padding: 0.5rem;
     /* border: 1px solid rgb(255, 255, 255); */
