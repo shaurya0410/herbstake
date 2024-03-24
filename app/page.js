@@ -48,6 +48,7 @@ const MainPage = () => {
         setUser((previous_obj) => ({
           ...previous_obj,
           owner: owner,
+          balance: balance,
         }));
       }
       if (staked != -1) {
