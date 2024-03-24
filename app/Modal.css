@@ -1,0 +1,118 @@
+.modal_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    /* margin: 1rem; */
+    /* border: 1px solid rgb(255, 255, 255); */
+    border-radius: 0.5rem;
+    background: linear-gradient(
+      109.6deg,
+      rgb(36, 45, 57) 11.2%,
+      rgb(16, 37, 60) 51.2%,
+      rgb(0, 0, 0) 98.6%
+    );
+    /* background: linear-gradient(132deg, rgb(1, 96, 105) 0.00%, rgb(0, 72, 95) 100.00%); */
+    z-index: 5;
+    color: white;
+    position: absolute;
+    top: 40%;
+    /* transform: translateY(-50%); */
+    /* bottom: 0rem; */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20rem;
+    /* height: 50rem; */
+    animation-name: modal;
+    animation-duration: 0.3s;
+    /* animation-fill-mode: forwards; */
+    /* animation-timing-function: ease-in-out; */
+  }
+  
+  /* @keyframes modal {
+    0% {
+      bottom: -50rem;
+    }
+    100% {
+      bottom: 0rem;
+    }
+  } */
+  
+  .modal_wrapper {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+  }
+  
+  /* .modal_button {
+      background: linear-gradient(90deg, #2c3e50 0%, #4ca1af 100%);
+      padding: 0.5rem;
+      width: 10rem;
+      border-radius: 6px;
+      border: none;
+      color: white;
+      font-weight: 500;
+      margin: 0rem auto;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border: 1px solid white;
+    }
+    
+    .modal_button:hover {
+      opacity: 0.5;
+    } */
+  
+  .modal_close {
+    position: absolute;
+    top: 0.7rem;
+    right: 1rem;
+    /* font-weight: 500; */
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+  
+  .modal_close:hover {
+    opacity: 0.5;
+    background: #ffffff;
+    color: black;
+  }
+  
+  .modal_title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: "Courier New", Courier, monospace;
+  }
+  
+  .modal_items {
+    margin: 1rem 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  }
+  
+
+ input {
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.7rem 0.2rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #000000;
+    text-align: center;
+    font-weight: 700;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+  }

@@ -1,0 +1,118 @@
+.calc_form{
+    width: 90vw;
+    height: auto;
+    /* background: linear-gradient(90deg, #f5f7fa 0%, #c3cfe2 100%); */
+    /* border: 1px solid lightgreen; */
+    border: none;
+    border-radius: 6px;
+    margin: 1rem auto;
+    margin-bottom: 5rem;
+    padding: 0.5rem;
+    /* position: absolute;
+    z-index: 5; */
+    display: flex;
+    flex-direction: column;
+    /* color: #000; */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.calc_input_box{
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+}
+
+.calc_input_item{
+    height: 3.5rem;
+    margin: 0.2rem;
+    border: 1px solid green;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.1rem;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    /* background-color: white; */
+    border-radius: 6px;
+}
+
+.calc_input_item input{
+    margin: 0rem;
+    padding-left: 0.5rem;
+    padding-top: 0.5rem;
+    width: 99%;
+    height: 80%;
+    border: none;
+    outline: none;
+    font-size: 1.2rem;
+    background:transparent;
+    color: white;
+}
+
+.calc_input_item span{
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 0.9rem;
+    color: green;
+}
+
+.calc_input_item img{
+    /* border: 1px solid black; */
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+}
+
+.calc_profit_box{
+    /* border: 1px solid black; */
+    /* display: flex;
+    justify-content: center; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.calc_profit_item{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 128, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    margin: 0.2rem;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    /* width: 9rem; */
+    min-height: 2.8rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.calc_profit_item .title{
+color: green;
+font-size: 0.9rem;
+line-height: 1.2rem;
+font-weight: 500;
+margin-bottom: 0.2rem;
+}
+
+.calc_profit_item span{
+font-size: 1rem;
+}
+
+.calc_btn{
+    margin: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 6rem;
+    border: none;
+    background: green;
+    color: white;
+}
