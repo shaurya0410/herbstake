@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calculator from "./components/Calculator";
 import Button from "./components/Button";
 import Modal from "./components/Modal";
@@ -7,10 +7,25 @@ import TopStaked from "./components/TopStaked";
 import * as waxjs from "@waxio/waxjs/dist";
 const wax = new waxjs.WaxJS({
   rpcEndpoint: "https://wax.greymass.com",
-  tryAutoLogin: false,
+  // tryAutoLogin: false,
 });
 
 const MainPage = () => {
+  useEffect(() => {
+    try {
+      setTimeout(() => {
+        if (wax.userAccount) {
+          getData(wax.userAccount);
+          setIsUser(true);
+        }else{
+          return;
+        }
+      }, 500);
+    } catch (error) {
+      return;
+    }
+  }, []);
+
   const [type, setType] = useState("");
   const [modal, setModal] = useState(false);
   const [isuser, setIsUser] = useState(false);
@@ -43,38 +58,36 @@ const MainPage = () => {
         setTopstakers(top);
       }
 
-      if (staked == -1 && unstaked == -1) {
-        setUser((previous_obj) => ({
-          ...previous_obj,
-          owner: owner,
-          balance: balance,
-        }));
-      }
+      let last_claim = 0;
+      let claim = "0.0000";
+      let staked_amount = "0.0000 HERB";
+      let unstaked_amount = "0.0000 HERB";
+      let unlock_cooldown = 0;
+
       if (staked != -1) {
         // console.log(staked.last_claim);
-        let last_claim = new Date(staked.last_claim + "z").getTime();
-        let claim_amount = calculateClaim(staked.quantity, last_claim);
-        setUser((previous_obj) => ({
-          ...previous_obj,
-          owner: staked.owner,
-          staked_amount: staked.quantity,
-          claim: claim_amount,
-          last_claim: last_claim,
-          balance: balance,
-        }));
+        last_claim = new Date(staked.last_claim + "z").getTime();
+        claim = calculateClaim(staked.quantity, last_claim);
+        staked_amount = staked.quantity;
       }
+
       if (unstaked != -1) {
         // console.log(unstaked);
-        let unlock_cooldown = new Date(unstaked.unlock_time + "z").getTime();
+        unlock_cooldown = new Date(unstaked.unlock_time + "z").getTime();
         // console.log(unlock_cooldown);
-        setUser((previous_obj) => ({
-          ...previous_obj,
-          owner: unstaked.owner,
-          unstaked_amount: unstaked.quantity,
-          unlock_cooldown: unlock_cooldown,
-          balance: balance,
-        }));
+        unstaked_amount = unstaked.quantity;
       }
+
+      setUser((previous_obj) => ({
+        ...previous_obj,
+        owner,
+        staked_amount,
+        claim,
+        last_claim,
+        balance,
+        unstaked_amount,
+        unlock_cooldown,
+      }));
     } catch (error) {
       alert(error);
     }
@@ -86,31 +99,33 @@ const MainPage = () => {
       owner: "",
       staked_amount: "0.0000 HERB",
       claim: "0.0000",
-      last_claim: "0",
+      last_claim: 0,
       balance: "0",
       unstaked_amount: "0.0000 HERB",
-      unlock_cooldown: -10,
+      unlock_cooldown: 0,
     });
   }
 
-  if (user.unlock_cooldown > 0) {
+  if (isuser) {
     setTimeout(() => {
       setUser((prevObject) => ({
         ...prevObject, // Spread previous object properties
         unlock_cooldown: prevObject.unlock_cooldown + 1, // Update only the desired property
+        claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
+        last_claim: prevObject.last_claim + 1,
       }));
     }, 1000);
   }
 
-  if (user.last_claim > 0) {
-    setTimeout(() => {
-      setUser((prevObject) => ({
-        ...prevObject, // Spread previous object properties
-        claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
-        last_claim: prevObject.last_claim + 1, // Update only the desired property
-      }));
-    }, 1000);
-  }
+  // if (user.last_claim > 0) {
+  //   setTimeout(() => {
+  //     setUser((prevObject) => ({
+  //       ...prevObject, // Spread previous object properties
+  //       claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
+  //       last_claim: prevObject.last_claim + 1, // Update only the desired property
+  //     }));
+  //   }, 5000);
+  // }
 
   return (
     <div className="staking_container">
@@ -213,7 +228,7 @@ const MainPage = () => {
           </div>
         }
         {/* </div> */}
-        {user.unlock_cooldown > 0 && (
+        {isuser && user.unlock_cooldown - Date.now() > 0 && (
           <div className="redeem_box">
             <span className="redeem_cooldown">
               {user.unlock_cooldown > 0
@@ -319,7 +334,7 @@ const wax_unstaked_data = async (_owner) => {
 };
 
 function calculateTimeLeft(unlockTime) {
-  var currentTime = new Date().getTime();
+  var currentTime = Date.now();
   var timeDifference = unlockTime - currentTime;
 
   var seconds = Math.floor((timeDifference / 1000) % 60);
@@ -398,7 +413,7 @@ const wax_top_stakers_data = async () => {
       let amount = parseFloat(array[0]);
       newData.push({ ...element, amount });
     });
-    console.log(newData);
+    // console.log(newData);
     return newData;
   } catch (error) {
     console.log(error);
@@ -440,13 +455,14 @@ function calculateClaim(quantity, last_claim) {
   let asset = quantity.split(" ");
   let staked_amount = parseFloat(asset[0]);
   // console.log(staked_amount);
-  let current_time = new Date().getTime();
-  let elapsed_time = (current_time -last_claim) / 1000;
+  let current_time = Date.now();
+  let elapsed_time = (current_time - last_claim) / 1000;
   // const apy = 0.1; // 10% APY
   const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
   let claim_amount = (staked_amount * reward_per_second * elapsed_time).toFixed(
     4
   );
+  // console.log(reward_per_second);
   // console.log(claim_amount);
   return claim_amount;
 }
