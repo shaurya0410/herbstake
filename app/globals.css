@@ -1,4 +1,4 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -30,6 +30,11 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+} */
+
+body{
+  background: #000;
+  color: white;
 }
 
 
@@ -39,9 +44,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid rgb(255, 255, 255); */
-  /* height: 28rem; */
-  /* background-color: rgba(240, 248, 255, 0.528); */
   margin: 0rem auto;
   text-align: center;
   height: auto;
@@ -86,15 +88,6 @@ h2{
   font-weight: bold;
   transition: 1s;
 }
-
-
-/* .staking_info {
-  display: flex;
-  flex-direction: column;
-  margin: 1rem auto;
-  width: 80vw;
-  border: 1px solid rgb(255, 255, 255);
-} */
 
 .btn_box{
   display: flex;
@@ -162,12 +155,13 @@ h2{
   }
 
   .btn{
+    background: #000;
     color: white;
     font-size: 1.2rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     padding: 0.5rem 1rem;
-    max-width: 10rem;
+    width: auto;
     cursor: pointer;
     margin: 0.5rem;
     font-weight: bold;

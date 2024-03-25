@@ -25,7 +25,6 @@ const MainPage = () => {
     balance: "0",
   });
 
-
   async function getData(owner) {
     try {
       let [staked, unstaked, balance, top] = await Promise.all([
@@ -44,7 +43,7 @@ const MainPage = () => {
         setTopstakers(top);
       }
 
-      if(staked == -1 && unstaked == -1){
+      if (staked == -1 && unstaked == -1) {
         setUser((previous_obj) => ({
           ...previous_obj,
           owner: owner,
@@ -52,6 +51,7 @@ const MainPage = () => {
         }));
       }
       if (staked != -1) {
+        // console.log(staked.last_claim);
         let last_claim = new Date(staked.last_claim + "z").getTime();
         let claim_amount = calculateClaim(staked.quantity, last_claim);
         setUser((previous_obj) => ({
@@ -114,10 +114,10 @@ const MainPage = () => {
 
   return (
     <div className="staking_container">
-        <div className="wallet_balance">
-          {/* <span>Balance:</span> */}
-          <span>{`${user.balance} HERB`}</span>
-        </div>
+      <div className="wallet_balance">
+        {/* <span>Balance:</span> */}
+        <span>{`${user.balance} HERB`}</span>
+      </div>
       <div className="wallet_box">
         {!isuser ? (
           <button
@@ -135,7 +135,7 @@ const MainPage = () => {
                   if (wax.proofVerified) {
                     setIsUser(true);
                     // alert(`${userAccount} connected`);
-                    getData(userAccount);
+                    getData(wax.userAccount);
                   }
                 }
               } catch (error) {
@@ -191,25 +191,27 @@ const MainPage = () => {
           />
         </div>
 
-       { <div className="unstake_box">
-          <span className="title">Unstaked</span>
-          <span className="amount">{user.unstaked_amount}</span>
+        {
+          <div className="unstake_box">
+            <span className="title">Unstaked</span>
+            <span className="amount">{user.unstaked_amount}</span>
 
-          <div className="btn_box">
-            <Button
-              text={"unstake"}
-              setModal={setModal}
-              setType={setType}
-              isuser={isuser}
-            />
-            <Button
-              text={"restake"}
-              setModal={setModal}
-              setType={setType}
-              isuser={isuser}
-            />
+            <div className="btn_box">
+              <Button
+                text={"unstake"}
+                setModal={setModal}
+                setType={setType}
+                isuser={isuser}
+              />
+              <Button
+                text={"restake"}
+                setModal={setModal}
+                setType={setType}
+                isuser={isuser}
+              />
+            </div>
           </div>
-        </div>}
+        }
         {/* </div> */}
         {user.unlock_cooldown > 0 && (
           <div className="redeem_box">
@@ -439,14 +441,12 @@ function calculateClaim(quantity, last_claim) {
   let staked_amount = parseFloat(asset[0]);
   // console.log(staked_amount);
   let current_time = new Date().getTime();
-  let elapsed_time = (current_time - last_claim) / 1000;
+  let elapsed_time = (current_time -last_claim) / 1000;
   // const apy = 0.1; // 10% APY
   const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
-  let claim_amount = (
-    staked_amount *
-    reward_per_second *
-    elapsed_time
-  ).toFixed(4);
+  let claim_amount = (staked_amount * reward_per_second * elapsed_time).toFixed(
+    4
+  );
   // console.log(claim_amount);
   return claim_amount;
 }
