@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Calculator from "./components/Calculator";
 import Button from "./components/Button";
 import Modal from "./components/Modal";
+import Login from "./components/Login";
 import TopStaked from "./components/TopStaked";
 import * as waxjs from "@waxio/waxjs/dist";
 const wax = new waxjs.WaxJS({
@@ -10,21 +11,38 @@ const wax = new waxjs.WaxJS({
   // tryAutoLogin: false,
 });
 
+import AnchorLink from "anchor-link";
+import AnchorLinkBrowserTransport from "anchor-link-browser-transport";
+
+const transport = new AnchorLinkBrowserTransport();
+const link = new AnchorLink({
+  transport,
+  chains: [
+    {
+      chainId:
+        "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4",
+      nodeUrl: "https://wax.greymass.com",
+    },
+  ],
+});
 const MainPage = () => {
-  useEffect(() => {
-    try {
-      setTimeout(() => {
-        if (wax.userAccount) {
-          getData(wax.userAccount);
-          setIsUser(true);
-        } else {
-          return;
-        }
-      }, 500);
-    } catch (error) {
-      return;
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     setTimeout(() => {
+  //       if (wax.userAccount) {
+  //         getData(wax.userAccount);
+  //         setIsUser(true);
+  //       } else {
+  //         return;
+  //       }
+  //     }, 500);
+  //   } catch (error) {
+  //     return;
+  //   }
+  // }, []);
+  const [loginModal, setLoginModal] = useState(false);
+  const [wallet, setWallet] = useState("wax"); //anchor
+  const [session, setSession] = useState("");
   const [rph, setRph] = useState(0);
   const [type, setType] = useState("");
   const [modal, setModal] = useState(false);
@@ -140,6 +158,68 @@ const MainPage = () => {
     }, 1000);
   }
 
+  const wax_transact = async (_owner, _quantity = 1, type) => {
+    try {
+      let data = {};
+      if (type == "stake") {
+        data = {
+          from: _owner,
+          to: contract,
+          quantity: `${parseFloat(_quantity).toFixed(4)} HERB`,
+          memo: type,
+        };
+      } else if (type == "unstake" || type == "restake") {
+        data = {
+          owner: _owner,
+          quantity: `${parseFloat(_quantity).toFixed(4)} HERB`,
+        };
+      } else if (type == "redeem" || type == "claim") {
+        data = {
+          owner: _owner,
+        };
+      }
+
+      if (wallet == "wax") {
+        const result = await wax.api.transact(
+          {
+            actions: [
+              {
+                account: type == "stake" ? "naturestoken" : contract,
+                name: type == "stake" ? "transfer" : type,
+                authorization: [
+                  {
+                    actor: _owner,
+                    permission: "active",
+                  },
+                ],
+                data: data,
+              },
+            ],
+          },
+          {
+            blocksBehind: 3,
+            expireSeconds: 1200,
+          }
+        );
+
+        return { value: 1, message: result.transaction_id };
+      } else {
+        const action = {
+          account: type == "stake" ? "naturestoken" : contract,
+          name: type == "stake" ? "transfer" : type,
+          authorization: [session.auth],
+          data: data,
+        };
+
+        const tx = await session.transact({ action });
+        return { value: 1, message: tx.processed.id };
+      }
+    } catch (error) {
+      // return -1;
+      return { value: -1, message: error.message };
+    }
+  };
+
   // if (user.last_claim > 0) {
   //   setTimeout(() => {
   //     setUser((prevObject) => ({
@@ -160,28 +240,11 @@ const MainPage = () => {
         {!isuser ? (
           <button
             className="btn"
-            onClick={async () => {
-              try {
-                const isAutoLoginAvailable = await wax.isAutoLoginAvailable();
-                if (isAutoLoginAvailable) {
-                  setIsUser(true);
-                  // alert(`${wax.userAccount} connected`);
-                  getData(wax.userAccount);
-                } else {
-                  const nonce = "herbstaking";
-                  await wax.login(nonce);
-                  if (wax.proofVerified) {
-                    setIsUser(true);
-                    // alert(`${userAccount} connected`);
-                    getData(wax.userAccount);
-                  }
-                }
-              } catch (error) {
-                return;
-              }
+            onClick={()=>{
+              setLoginModal(true);
             }}
           >
-            {"connect"}
+            {`connect`}
           </button>
         ) : (
           <button
@@ -189,14 +252,18 @@ const MainPage = () => {
             onClick={async () => {
               try {
                 wax.logout();
+                if (session) {
+                  session.remove();
+                }
                 setIsUser(false);
                 reset();
+                setWallet("");
               } catch (error) {
-                return;
+                console.log(error);
               }
             }}
           >
-            {"logout"}
+            {`logout - ${user.owner}`}
           </button>
         )}
       </div>
@@ -297,6 +364,17 @@ const MainPage = () => {
           getData={getData}
         />
       )}
+            {loginModal && (
+        <Login
+          setLoginModal={setLoginModal}
+          getData={getData}
+          setSession={setSession}
+          setIsUser={setIsUser}
+          setWallet={setWallet}
+          link={link}
+          wax={wax}
+        />
+      )}
     </div>
   );
 };
@@ -368,55 +446,6 @@ function calculateTimeLeft(unlockTime) {
 
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
-
-const wax_transact = async (_owner, _quantity = 1, type) => {
-  try {
-    let data = {};
-    if (type == "stake") {
-      data = {
-        from: _owner,
-        to: contract,
-        quantity: `${parseFloat(_quantity).toFixed(4)} HERB`,
-        memo: type,
-      };
-    } else if (type == "unstake" || type == "restake") {
-      data = {
-        owner: _owner,
-        quantity: `${parseFloat(_quantity).toFixed(4)} HERB`,
-      };
-    } else if (type == "redeem" || type == "claim") {
-      data = {
-        owner: _owner,
-      };
-    }
-    const result = await wax.api.transact(
-      {
-        actions: [
-          {
-            account: type == "stake" ? "naturestoken" : contract,
-            name: type == "stake" ? "transfer" : type,
-            authorization: [
-              {
-                actor: _owner,
-                permission: "active",
-              },
-            ],
-            data: data,
-          },
-        ],
-      },
-      {
-        blocksBehind: 3,
-        expireSeconds: 1200,
-      }
-    );
-
-    return { value: 1, message: result.transaction_id };
-  } catch (error) {
-    // return -1;
-    return { value: -1, message: error.message };
-  }
-};
 
 const wax_top_stakers_data = async () => {
   try {

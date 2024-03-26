@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@waxio/waxjs": "^1.7.1",
+    "anchor-link": "^3.5.1",
+    "anchor-link-browser-transport": "^3.5.1",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18"
