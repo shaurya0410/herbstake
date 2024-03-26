@@ -263,7 +263,7 @@ const MainPage = () => {
               }
             }}
           >
-            {`logout - ${user.owner}`}
+            {`${user.owner}`}
           </button>
         )}
       </div>

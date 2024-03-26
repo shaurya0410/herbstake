@@ -30,7 +30,8 @@
   z-index: 10;
 }
 
-button {
+.cw,
+.aw {
   background: linear-gradient(90deg, #2c3e50 0%, #4ca1af 100%);
   padding: 1rem;
   width: 11rem;

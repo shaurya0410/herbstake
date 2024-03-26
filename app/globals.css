@@ -3,7 +3,6 @@ body{
   color: white;
 }
 
-
 /* staking.css */
 .staking_container {
   display: flex;
@@ -65,7 +64,7 @@ h2{
   top: 2.25rem;
   left: 8.5rem;
   color: lightseagreen;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: bold;
   margin-left: 0.5rem;
   /* border: 1px solid white; */

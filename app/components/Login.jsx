@@ -23,7 +23,7 @@ const Login = ({
           X
         </span>
         <h2 className="wallet_heading">Select Wallet</h2>
-        <button
+        <button type="button"
           className="cw"
           onClick={async () => {
             try {
