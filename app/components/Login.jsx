@@ -2,7 +2,15 @@
 import React from "react";
 import "../Login.css";
 const identifier = "stake.herb";
-const Login = ({ setLoginModal, setWallet, getData, setIsUser, link ,setSession, wax}) => {
+const Login = ({
+  setLoginModal,
+  setWallet,
+  getData,
+  setIsUser,
+  link,
+  setSession,
+  wax,
+}) => {
   return (
     <div className="login_wrapper">
       <div className="login_box">
@@ -25,6 +33,7 @@ const Login = ({ setLoginModal, setWallet, getData, setIsUser, link ,setSession,
                 // alert(`${wax.userAccount} connected`);
                 getData(wax.userAccount);
                 setWallet("wax");
+                setLoginModal(false);
               } else {
                 const nonce = identifier;
                 await wax.login(nonce);
@@ -33,6 +42,7 @@ const Login = ({ setLoginModal, setWallet, getData, setIsUser, link ,setSession,
                   // alert(`${userAccount} connected`);
                   getData(wax.userAccount);
                   setWallet("wax");
+                  setLoginModal(false);
                 }
               }
             } catch (error) {
@@ -57,6 +67,7 @@ const Login = ({ setLoginModal, setWallet, getData, setIsUser, link ,setSession,
                   setIsUser(true);
                   getData(result.session.auth.actor);
                   setWallet("anchor");
+                  setLoginModal(false);
                 })
                 .catch((error) => {
                   console.log(error);
