@@ -32,9 +32,12 @@ h2{
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.2em 0.5rem;
   margin: 0.5rem auto;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr; */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .claim_amount img {
@@ -46,14 +49,28 @@ h2{
 
 .claim_amount {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   color: #98ff98;
   letter-spacing: 2px;
   font-size: 1.2rem;
   font-weight: bold;
   transition: 1s;
+  /* border: 1px solid white; */
+  padding-right:0.5rem;
 }
+
+.reward_perhour{
+  position: absolute;
+  top: 2.25rem;
+  left: 8.5rem;
+  color: lightseagreen;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  /* border: 1px solid white; */
+}
+
 
 .btn_box{
   display: flex;
@@ -95,20 +112,20 @@ h2{
 }
 
 .redeem_box{
-    width: 90vw;
-    height: 4rem;
-    /* From https://css.glass */
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.2em 0.5rem;
-    margin: 0.5rem auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 90vw;
+  height: 4rem;
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.2em 0.5rem;
+  margin: 0.5rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
   .redeem_cooldown{
@@ -119,7 +136,7 @@ h2{
     font-size: 1rem;
     padding-left: 1rem;
   }
-
+  
   .btn{
     background: #000;
     color: white;
@@ -133,14 +150,14 @@ h2{
     font-weight: bold;
     font-family: serif;
   }
-
+  
   .btn:hover{
     color:lightgreen;
     border: 1px solid rgba(144, 238, 144, 0.2);
     /* animation: btn;
     animation-duration: 0.3s; */
   }
-
+  
   /* topstakers.css */
   .top_box{
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -150,7 +167,7 @@ h2{
     margin-bottom: 2rem;
     border-radius: 6px;
   }
-
+  
   .top_items{
     border: 1px solid rgba(255, 255, 255, 0.2);
     margin: 0.5rem auto;
@@ -162,12 +179,12 @@ h2{
     min-width: 18rem;
     /* overflow-x: scroll; */
   }
-
+  
   .top_index{
     opacity: 0.5;
     text-align: left;
   }
-
+  
   .top_owner{
     color: lightgreen;
     text-align: center;
@@ -175,7 +192,7 @@ h2{
     font-size: 0.9rem;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
   }
-
+  
   .top_quantity{
     display: flex;
     justify-content:flex-end;
@@ -187,13 +204,13 @@ h2{
     font-family: serif;
     font-size: 1.1rem;
   }
-
+  
   .top_quantity img{
     width: 1.8rem;
     height: 1.8rem;
     margin-left: 0.5rem;
   }
-
+  
   .wallet_balance{
     display: flex;
     color: rgba(255, 255, 255, 0.5);
@@ -210,7 +227,7 @@ h2{
     font-weight: bold;
     font-size: 0.9rem;
   }
-
+  
   .wallet_box{
     position: absolute;
     top: 0rem;

@@ -17,7 +17,7 @@ const MainPage = () => {
         if (wax.userAccount) {
           getData(wax.userAccount);
           setIsUser(true);
-        }else{
+        } else {
           return;
         }
       }, 500);
@@ -25,7 +25,7 @@ const MainPage = () => {
       return;
     }
   }, []);
-
+  const [rph, setRph] = useState(0);
   const [type, setType] = useState("");
   const [modal, setModal] = useState(false);
   const [isuser, setIsUser] = useState(false);
@@ -66,16 +66,17 @@ const MainPage = () => {
 
       if (staked != -1) {
         // console.log(staked.last_claim);
-        last_claim = new Date(staked.last_claim + "z").getTime();
+        last_claim = new Date(staked.last_claim + "Z").getTime();
         claim = calculateClaim(staked.quantity, last_claim);
         staked_amount = staked.quantity;
       }
 
       if (unstaked != -1) {
         // console.log(unstaked);
-        unlock_cooldown = new Date(unstaked.unlock_time + "z").getTime();
+        unlock_cooldown = new Date(unstaked.unlock_time + "Z").getTime();
         // console.log(unlock_cooldown);
         unstaked_amount = unstaked.quantity;
+        // alert(new Date(unstaked.unlock_time).getTime());
       }
 
       setUser((previous_obj) => ({
@@ -93,8 +94,29 @@ const MainPage = () => {
     }
   }
 
+  function calculateClaim(quantity, last_claim) {
+    // console.log(quantity);
+    let asset = quantity.split(" ");
+    let staked_amount = parseFloat(asset[0]);
+    // console.log(staked_amount);
+    let current_time = Date.now();
+    let elapsed_time = (current_time - parseInt(last_claim)) / 1000;
+    // const apy = 0.1; // 10% APY
+    const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
+    let claim_amount = (
+      staked_amount *
+      reward_per_second *
+      elapsed_time
+    ).toFixed(4);
+    setRph(staked_amount * reward_per_second * 60 * 60);
+    // console.log(reward_per_second);
+    // console.log(claim_amount);
+    return claim_amount;
+  }
+
   function reset() {
     setTopstakers([]);
+    setRph(0);
     setUser({
       owner: "",
       staked_amount: "0.0000 HERB",
@@ -110,7 +132,8 @@ const MainPage = () => {
     setTimeout(() => {
       setUser((prevObject) => ({
         ...prevObject, // Spread previous object properties
-        unlock_cooldown: prevObject.unlock_cooldown + 1, // Update only the desired property
+        unlock_cooldown:
+          prevObject.unlock_cooldown > 0 ? prevObject.unlock_cooldown + 1 : 0, // Update only the desired property
         claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
         last_claim: prevObject.last_claim + 1,
       }));
@@ -146,7 +169,7 @@ const MainPage = () => {
                   getData(wax.userAccount);
                 } else {
                   const nonce = "herbstaking";
-                  const userAccount = await wax.login(nonce);
+                  await wax.login(nonce);
                   if (wax.proofVerified) {
                     setIsUser(true);
                     // alert(`${userAccount} connected`);
@@ -185,6 +208,7 @@ const MainPage = () => {
             <img src="HERB.png" alt="" />
             <span>{user.claim}</span>
           </span>
+          <span className="reward_perhour">{`(${rph.toFixed(4)}/h)`}</span>
           <Button
             setModal={setModal}
             text={"claim"}
@@ -228,7 +252,7 @@ const MainPage = () => {
           </div>
         }
         {/* </div> */}
-        {isuser && user.unlock_cooldown - Date.now() > 0 && (
+        {isuser && (
           <div className="redeem_box">
             <span className="redeem_cooldown">
               {user.unlock_cooldown > 0
@@ -335,7 +359,7 @@ const wax_unstaked_data = async (_owner) => {
 
 function calculateTimeLeft(unlockTime) {
   var currentTime = Date.now();
-  var timeDifference = unlockTime - currentTime;
+  var timeDifference = parseInt(unlockTime) - currentTime;
 
   var seconds = Math.floor((timeDifference / 1000) % 60);
   var minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
@@ -449,20 +473,3 @@ const herb_balance = async (owner) => {
     return -1;
   }
 };
-
-function calculateClaim(quantity, last_claim) {
-  // console.log(quantity);
-  let asset = quantity.split(" ");
-  let staked_amount = parseFloat(asset[0]);
-  // console.log(staked_amount);
-  let current_time = Date.now();
-  let elapsed_time = (current_time - last_claim) / 1000;
-  // const apy = 0.1; // 10% APY
-  const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
-  let claim_amount = (staked_amount * reward_per_second * elapsed_time).toFixed(
-    4
-  );
-  // console.log(reward_per_second);
-  // console.log(claim_amount);
-  return claim_amount;
-}
