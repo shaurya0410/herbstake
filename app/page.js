@@ -5,6 +5,7 @@ import Button from "./components/Button";
 import Modal from "./components/Modal";
 import Login from "./components/Login";
 import TopStaked from "./components/TopStaked";
+import Stats from "./components/Stats";
 import * as waxjs from "@waxio/waxjs/dist";
 const wax = new waxjs.WaxJS({
   rpcEndpoint: "https://wax.greymass.com",
@@ -26,20 +27,7 @@ const link = new AnchorLink({
   ],
 });
 const MainPage = () => {
-  // useEffect(() => {
-  //   try {
-  //     setTimeout(() => {
-  //       if (wax.userAccount) {
-  //         getData(wax.userAccount);
-  //         setIsUser(true);
-  //       } else {
-  //         return;
-  //       }
-  //     }, 500);
-  //   } catch (error) {
-  //     return;
-  //   }
-  // }, []);
+  const [info, setInfo] = useState({});
   const [loginModal, setLoginModal] = useState(false);
   const [wallet, setWallet] = useState("wax"); //anchor
   const [session, setSession] = useState("");
@@ -60,11 +48,12 @@ const MainPage = () => {
 
   async function getData(owner) {
     try {
-      let [staked, unstaked, balance, top] = await Promise.all([
+      let [staked, unstaked, balance, top, info] = await Promise.all([
         wax_staked_data(owner),
         wax_unstaked_data(owner),
         herb_balance(owner),
         wax_top_stakers_data(),
+        wax_info()
       ]);
 
       // console.log(balance);
@@ -74,6 +63,9 @@ const MainPage = () => {
       }
       if (top != -1) {
         setTopstakers(top);
+      }
+      if (info != -1) {
+        setInfo(info);
       }
 
       let last_claim = 0;
@@ -240,7 +232,7 @@ const MainPage = () => {
         {!isuser ? (
           <button
             className="btn"
-            onClick={()=>{
+            onClick={() => {
               setLoginModal(true);
             }}
           >
@@ -353,6 +345,16 @@ const MainPage = () => {
           margin: "1rem",
         }}
       />
+      <h2>Stats</h2>
+      <Stats info={info}/>
+      <hr
+        style={{
+          color: "white",
+          opacity: "0.5",
+          width: "80vw",
+          margin: "1rem",
+        }}
+      />
       <h2>Top Stakers</h2>
       <TopStaked topstakers={topstakers} />
       {modal && (
@@ -364,7 +366,7 @@ const MainPage = () => {
           getData={getData}
         />
       )}
-            {loginModal && (
+      {loginModal && (
         <Login
           setLoginModal={setLoginModal}
           getData={getData}
@@ -499,6 +501,27 @@ const herb_balance = async (owner) => {
     }
   } catch (error) {
     // console.log(error);
+    return -1;
+  }
+};
+
+const wax_info = async () => {
+  try {
+    // console.log(process.env.CONTRACT);
+    const data = await wax.rpc.get_table_rows({
+      json: true,
+      code: contract,
+      scope: contract,
+      table: "stakeconfig",
+      // lower_bound: _owner,
+      limit: 1,
+      reverse: false,
+      show_payer: false,
+    });
+
+    return data.rows[0];
+  } catch (error) {
+    console.log(error);
     return -1;
   }
 };

@@ -1,5 +1,5 @@
 html {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 @media screen and (min-width: 50rem){
@@ -7,7 +7,6 @@ html {
     font-size: 20px;
   }
 }
-
 
 body{
   background: #000;
@@ -73,7 +72,7 @@ h2{
 .reward_perhour{
   position: absolute;
   top: 2.25rem;
-  left: 8.5rem;
+  left: 9rem;
   color: lightseagreen;
   font-size: 0.8rem;
   font-weight: bold;
