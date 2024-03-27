@@ -27,7 +27,10 @@ const link = new AnchorLink({
   ],
 });
 const MainPage = () => {
-  const [info, setInfo] = useState({});
+  const [info, setInfo] = useState({
+    total_staked: "0.0000 HERB",
+    total_unstaked: "0.0000 HERB",
+  });
   const [loginModal, setLoginModal] = useState(false);
   const [wallet, setWallet] = useState("wax"); //anchor
   const [session, setSession] = useState("");
@@ -53,7 +56,7 @@ const MainPage = () => {
         wax_unstaked_data(owner),
         herb_balance(owner),
         wax_top_stakers_data(),
-        wax_info()
+        wax_info(),
       ]);
 
       // console.log(balance);
@@ -346,7 +349,7 @@ const MainPage = () => {
         }}
       />
       <h2>Stats</h2>
-      <Stats info={info}/>
+      <Stats info={info} />
       <hr
         style={{
           color: "white",

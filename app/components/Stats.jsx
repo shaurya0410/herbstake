@@ -1,12 +1,8 @@
+'use client'
 import React from "react";
 import "../Stats.css";
 const TOTAL_SUPPLY = "1000000.0000 HERB";
 const Stats = ({ info }) => {
-  function parse_asset(quantity) {
-    let asset = quantity.split(" ");
-    let amount = parseFloat(asset[0]);
-    return amount;
-  }
   return (
     <div className="stats_box">
       <div className="stats_items supply">
@@ -31,3 +27,9 @@ const Stats = ({ info }) => {
 };
 
 export default Stats;
+
+function parse_asset(quantity) {
+  let asset = quantity.split(" ");
+  let amount = parseFloat(asset[0]);
+  return amount;
+}
