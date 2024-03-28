@@ -339,7 +339,7 @@ const MainPage = () => {
         }}
       />
       <h2>Reward Calculator</h2>
-      <Calculator />
+      <Calculator parse_numbers={parse_numbers} />
       <hr
         style={{
           color: "white",
@@ -349,7 +349,7 @@ const MainPage = () => {
         }}
       />
       <h2>Stats</h2>
-      <Stats info={info} />
+      <Stats info={info} parse_numbers={parse_numbers} />
       <hr
         style={{
           color: "white",
@@ -359,7 +359,7 @@ const MainPage = () => {
         }}
       />
       <h2>Top Stakers</h2>
-      <TopStaked topstakers={topstakers} />
+      <TopStaked topstakers={topstakers} parse_numbers={parse_numbers} />
       {modal && (
         <Modal
           setModal={setModal}
@@ -367,6 +367,7 @@ const MainPage = () => {
           user={user}
           type={type}
           getData={getData}
+          parse_numbers={parse_numbers}
         />
       )}
       {loginModal && (
@@ -461,7 +462,7 @@ const wax_top_stakers_data = async () => {
       scope: contract,
       table: "stakes",
       // lower_bound: _owner,
-      limit: 100,
+      limit: 500,
       reverse: false,
       show_payer: false,
     });
@@ -526,5 +527,20 @@ const wax_info = async () => {
   } catch (error) {
     console.log(error);
     return -1;
+  }
+};
+
+//helper function
+const parse_numbers = (value) => {
+  if (value >= 1000000000000) {
+    return (value / 1000000000000).toFixed(2) + "T";
+  } else if (value >= 1000000000) {
+    return (value / 1000000000).toFixed(2) + "B";
+  } else if (value >= 1000000) {
+    return (value / 1000000).toFixed(2) + "M";
+  } else if (value >= 1000) {
+    return (value / 1000).toFixed(2) + "K";
+  } else {
+    return (value / 1).toFixed(2);
   }
 };

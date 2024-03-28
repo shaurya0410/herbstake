@@ -72,11 +72,11 @@ h2{
 .reward_perhour{
   position: absolute;
   top: 2.25rem;
-  left: 9rem;
+  left: 10rem;
   color: lightseagreen;
   font-size: 0.8rem;
   font-weight: bold;
-  margin-left: 0.5rem;
+  /* margin-left: 5rem; */
   /* border: 1px solid white; */
 }
 
@@ -198,7 +198,7 @@ h2{
     color: lightgreen;
     text-align: center;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
   }
   
@@ -211,12 +211,12 @@ h2{
   .top_quantity span{
     /* border: 1px solid white; */
     font-family: serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   
   .top_quantity img{
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 2rem;
+    height: 2rem;
     margin-left: 0.5rem;
   }
   
