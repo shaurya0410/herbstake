@@ -317,7 +317,7 @@ const MainPage = () => {
         {isuser && (
           <div className="redeem_box">
             <span className="redeem_cooldown">
-              {user.unlock_cooldown > 0
+              {user.unlock_cooldown-Date.now() > 0
                 ? calculateTimeLeft(user.unlock_cooldown)
                 : 0}
             </span>
