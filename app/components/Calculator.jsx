@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import "../Calculator.css";
-const Calculator = () => {
+const Calculator = ({info}) => {
   const handleCalculate = async () => {
-    const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
+    const reward_per_second = info.base_apr/100 / 365 / 24 / 60 / 60; // APY converted to per second
     let claim_amount_second = calc.amount * reward_per_second;
     setCalc((prevObj) => ({
       ...prevObj,
@@ -67,7 +67,7 @@ const Calculator = () => {
         </div>
         <div className="calc_profit_item">
           <span className="title">Yearly yield</span>
-          <span>{"8%"}</span>
+          <span>{info.base_apr}%</span>
         </div>
       </div>
       {calc.amount > 0? (

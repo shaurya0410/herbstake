@@ -38,7 +38,9 @@ const MainPage = () => {
   const [info, setInfo] = useState({
     total_staked: "0.0000 HERB",
     total_unstaked: "0.0000 HERB",
+    base_apr: 0,
   });
+
   const [loginModal, setLoginModal] = useState(false);
   const [wallet, setWallet] = useState("wax"); //anchor
   const [session, setSession] = useState("");
@@ -288,7 +290,7 @@ const MainPage = () => {
         )}
       </div>
 
-      {(staked+unstaked)>0 && (
+      {staked + unstaked > 0 && (
         <Staking
           isuser={isuser}
           staked={staked}
@@ -299,11 +301,12 @@ const MainPage = () => {
           unlockCooldown={unlockCooldown}
           setModal={setModal}
           setType={setType}
+          info={info}
         />
       )}
 
-      <h2>Reward Calculator</h2>
-      <Calculator parse_numbers={parse_numbers} />
+      <h2 style={{marginTop:'2rem'}}>Calculator</h2>
+      <Calculator parse_numbers={parse_numbers} info={info} />
       <hr
         style={{
           color: "white",
