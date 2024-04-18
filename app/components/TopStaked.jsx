@@ -11,7 +11,7 @@ const TopStaked = ({ topstakers, parse_numbers }) => {
       >
         <span style={{ textAlign: "left" }}>RANK</span>
         <span>OWNER</span>
-        <span>STAKING BONUS</span>
+        <span>MULTIPLIER</span>
         <span style={{ textAlign: "right" }}>STAKED</span>
       </div>
       {topstakers

@@ -7,7 +7,7 @@ const StakingLevel = () => {
         <thead>
           <tr>
             <th>Staking Level</th>
-            <th>Staking Bonus</th>
+            <th>Multiplier</th>
             <th>HERB Staked</th>
           </tr>
         </thead>
