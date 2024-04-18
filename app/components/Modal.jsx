@@ -1,8 +1,16 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import "../Modal.css";
 
-const Modal = ({ setModal, transact, user, type, getData }) => {
+const Modal = ({
+  setModal,
+  transact,
+  user,
+  type,
+  getData,
+  staked,
+  unstaked,
+}) => {
   const [amount, setAmount] = useState(0);
   const onChange = async (e) => {
     let val = e.target.value;
@@ -12,16 +20,12 @@ const Modal = ({ setModal, transact, user, type, getData }) => {
         val = user.balance;
       }
     } else if (type == "unstake") {
-      let asset = user.staked_amount.split(" ");
-      let amount = parseFloat(asset[0]);
-      if (parseFloat(val) > amount) {
-        val = amount;
+      if (parseFloat(val) > staked) {
+        val = staked;
       }
     } else if (type == "restake") {
-      let asset = user.unstaked_amount.split(" ");
-      let amount = parseFloat(asset[0]);
-      if (parseFloat(val) > amount) {
-        val = amount;
+      if (parseFloat(val) > unstaked) {
+        val = unstaked;
       }
     }
     setAmount(val);

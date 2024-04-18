@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Calculator from "./components/Calculator";
-import Button from "./components/Button";
+// import Button from "./components/Button";
 import Modal from "./components/Modal";
 import Login from "./components/Login";
 import TopStaked from "./components/TopStaked";
@@ -14,6 +14,8 @@ const wax = new waxjs.WaxJS({
 
 import AnchorLink from "anchor-link";
 import AnchorLinkBrowserTransport from "anchor-link-browser-transport";
+import StakingLevel from "./components/StakingLevel";
+import Staking from "./components/Staking";
 
 const transport = new AnchorLinkBrowserTransport();
 const link = new AnchorLink({
@@ -27,6 +29,12 @@ const link = new AnchorLink({
   ],
 });
 const MainPage = () => {
+  const [lastClaim, setLastClaim] = useState(0);
+  const [claim, setClaim] = useState(0);
+  const [unlockCooldown, setUnlockCooldown] = useState(0);
+  const [staked, setStaked] = useState(0);
+  const [unstaked, setUnstaked] = useState(0);
+
   const [info, setInfo] = useState({
     total_staked: "0.0000 HERB",
     total_unstaked: "0.0000 HERB",
@@ -34,18 +42,17 @@ const MainPage = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [wallet, setWallet] = useState("wax"); //anchor
   const [session, setSession] = useState("");
-  const [rph, setRph] = useState(0);
   const [type, setType] = useState("");
   const [modal, setModal] = useState(false);
   const [isuser, setIsUser] = useState(false);
   const [topstakers, setTopstakers] = useState([]);
   const [user, setUser] = useState({
     owner: "",
-    staked_amount: "0.0000 HERB",
-    claim: "0.0000",
-    last_claim: "0",
-    unstaked_amount: "0.0000 HERB",
-    unlock_cooldown: "0",
+    // staked_amount: "0.0000 HERB",
+    // claim: "0.0000",
+    // last_claim: "0",
+    // unstaked_amount: "0.0000 HERB",
+    // unlock_cooldown: "0",
     balance: "0",
   });
 
@@ -71,87 +78,105 @@ const MainPage = () => {
         setInfo(info);
       }
 
-      let last_claim = 0;
-      let claim = "0.0000";
-      let staked_amount = "0.0000 HERB";
-      let unstaked_amount = "0.0000 HERB";
-      let unlock_cooldown = 0;
+      // let last_claim = 0;
+      // let claim = "0.0000";
+      // let staked_amount = "0.0000 HERB";
+      // let unstaked_amount = "0.0000 HERB";
+      // let unlock_cooldown = 0;
 
       if (staked != -1) {
+        setStaked(parseToken(staked.quantity));
+        setClaim(
+          calculateClaim(
+            parseToken(staked.quantity),
+            new Date(staked.last_claim + "Z").getTime()
+          )
+        );
+        setLastClaim(new Date(staked.last_claim + "Z").getTime());
+
         // console.log(staked.last_claim);
-        last_claim = new Date(staked.last_claim + "Z").getTime();
-        claim = calculateClaim(staked.quantity, last_claim);
-        staked_amount = staked.quantity;
+        // last_claim = new Date(staked.last_claim + "Z").getTime();
+        // claim = calculateClaim(staked.quantity, last_claim);
+        // staked_amount = staked.quantity;
       }
 
       if (unstaked != -1) {
+        setUnstaked(parseToken(unstaked.quantity));
+
+        setUnlockCooldown(new Date(unstaked.unlock_time + "Z").getTime());
+
         // console.log(unstaked);
-        unlock_cooldown = new Date(unstaked.unlock_time + "Z").getTime();
+        // unlock_cooldown = new Date(unstaked.unlock_time + "Z").getTime();
         // console.log(unlock_cooldown);
-        unstaked_amount = unstaked.quantity;
+        // unstaked_amount = unstaked.quantity;
         // alert(new Date(unstaked.unlock_time).getTime());
       }
 
       setUser((previous_obj) => ({
         ...previous_obj,
         owner,
-        staked_amount,
-        claim,
-        last_claim,
+        // staked_amount,
+        // claim,
+        // last_claim,
         balance,
-        unstaked_amount,
-        unlock_cooldown,
+        // unstaked_amount,
+        // unlock_cooldown,
       }));
     } catch (error) {
       alert(error);
     }
   }
 
-  function calculateClaim(quantity, last_claim) {
-    // console.log(quantity);
-    let asset = quantity.split(" ");
-    let staked_amount = parseFloat(asset[0]);
-    // console.log(staked_amount);
-    let current_time = Date.now();
-    let elapsed_time = (current_time - parseInt(last_claim)) / 1000;
-    // const apy = 0.1; // 10% APY
-    const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
-    let claim_amount = (
-      staked_amount *
-      reward_per_second *
-      elapsed_time
-    ).toFixed(4);
-    setRph(staked_amount * reward_per_second * 60 * 60);
-    // console.log(reward_per_second);
-    // console.log(claim_amount);
-    return claim_amount;
-  }
+  // function calculateClaim(quantity, last_claim) {
+  //   // console.log(quantity);
+  //   let asset = quantity.split(" ");
+  //   let staked_amount = parseFloat(asset[0]);
+  //   // console.log(staked_amount);
+  //   let current_time = Date.now();
+  //   let elapsed_time = (current_time - parseInt(last_claim)) / 1000;
+  //   // const apy = 0.1; // 10% APY
+  //   const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
+  //   let claim_amount = (
+  //     staked_amount *
+  //     reward_per_second *
+  //     elapsed_time
+  //   ).toFixed(4);
+  //   setRph(staked_amount * reward_per_second * 60 * 60);
+  //   // console.log(reward_per_second);
+  //   // console.log(claim_amount);
+  //   return claim_amount;
+  // }
 
   function reset() {
     setTopstakers([]);
-    setRph(0);
     setUser({
       owner: "",
-      staked_amount: "0.0000 HERB",
-      claim: "0.0000",
-      last_claim: 0,
+      // staked_amount: "0.0000 HERB",
+      // claim: "0.0000",
+      // last_claim: 0,
       balance: "0",
-      unstaked_amount: "0.0000 HERB",
-      unlock_cooldown: 0,
+      // unstaked_amount: "0.0000 HERB",
+      // unlock_cooldown: 0,
     });
+    setClaim(0);
+    setStaked(0);
+    setUnlockCooldown(0);
+    setLastClaim(0);
+    setUnstaked(0);
   }
 
-  if (isuser) {
-    setTimeout(() => {
-      setUser((prevObject) => ({
-        ...prevObject, // Spread previous object properties
-        unlock_cooldown:
-          prevObject.unlock_cooldown > 0 ? prevObject.unlock_cooldown + 1 : 0, // Update only the desired property
-        claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
-        last_claim: prevObject.last_claim + 1,
-      }));
-    }, 1000);
-  }
+  // if (isuser) {
+  //   setInterval(() => {
+  //     console.log("1");
+  //     setUser((prevObject) => ({
+  //       ...prevObject, // Spread previous object properties
+  //       unlock_cooldown:
+  //         prevObject.unlock_cooldown > 0 ? prevObject.unlock_cooldown + 1 : 0, // Update only the desired property
+  //       claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
+  //       last_claim: prevObject.last_claim + 1,
+  //     }));
+  //   }, 1000);
+  // }
 
   const wax_transact = async (_owner, _quantity = 1, type) => {
     try {
@@ -262,82 +287,21 @@ const MainPage = () => {
           </button>
         )}
       </div>
-      <div className="staking_reward">
-        {/* <h2>Claimable Earning</h2> */}
-        <h2 className="main_heading">Staking Information</h2>
-        <div className="claim_box">
-          <span className="claim_amount">
-            <img src="HERB.png" alt="" />
-            <span>{user.claim}</span>
-          </span>
-          <span className="reward_perhour">{`(${rph.toFixed(4)}/h)`}</span>
-          <Button
-            setModal={setModal}
-            text={"claim"}
-            setType={setType}
-            isuser={isuser}
-          />
-        </div>
 
-        {/* <div className="staking_info"> */}
-        {/* <h2>Staking Information</h2> */}
-        <div className="stake_box">
-          <span className="title">Staked</span>
-          <span className="amount">{user.staked_amount}</span>
-          <Button
-            text={"stake"}
-            setModal={setModal}
-            setType={setType}
-            isuser={isuser}
-          />
-        </div>
+      {(staked+unstaked)>0 && (
+        <Staking
+          isuser={isuser}
+          staked={staked}
+          claim={claim}
+          setClaim={setClaim}
+          lastClaim={lastClaim}
+          unstaked={unstaked}
+          unlockCooldown={unlockCooldown}
+          setModal={setModal}
+          setType={setType}
+        />
+      )}
 
-        {
-          <div className="unstake_box">
-            <span className="title">Unstaked</span>
-            <span className="amount">{user.unstaked_amount}</span>
-
-            <div className="btn_box">
-              <Button
-                text={"unstake"}
-                setModal={setModal}
-                setType={setType}
-                isuser={isuser}
-              />
-              <Button
-                text={"restake"}
-                setModal={setModal}
-                setType={setType}
-                isuser={isuser}
-              />
-            </div>
-          </div>
-        }
-        {/* </div> */}
-        {isuser && (
-          <div className="redeem_box">
-            <span className="redeem_cooldown">
-              {user.unlock_cooldown-Date.now() > 0
-                ? calculateTimeLeft(user.unlock_cooldown)
-                : 0}
-            </span>
-            <Button
-              text={"redeem"}
-              setModal={setModal}
-              setType={setType}
-              isuser={isuser}
-            />
-          </div>
-        )}
-      </div>
-      <hr
-        style={{
-          color: "white",
-          opacity: "0.5",
-          width: "80vw",
-          margin: "1rem",
-        }}
-      />
       <h2>Reward Calculator</h2>
       <Calculator parse_numbers={parse_numbers} />
       <hr
@@ -358,6 +322,16 @@ const MainPage = () => {
           margin: "1rem",
         }}
       />
+      <h2>Staking Levels</h2>
+      <StakingLevel />
+      <hr
+        style={{
+          color: "white",
+          opacity: "0.5",
+          width: "80vw",
+          margin: "1rem",
+        }}
+      />
       <h2>Top Stakers</h2>
       <TopStaked topstakers={topstakers} parse_numbers={parse_numbers} />
       {modal && (
@@ -368,6 +342,8 @@ const MainPage = () => {
           type={type}
           getData={getData}
           parse_numbers={parse_numbers}
+          staked={staked}
+          unstaked={unstaked}
         />
       )}
       {loginModal && (
@@ -441,17 +417,17 @@ const wax_unstaked_data = async (_owner) => {
   }
 };
 
-function calculateTimeLeft(unlockTime) {
-  var currentTime = Date.now();
-  var timeDifference = parseInt(unlockTime) - currentTime;
+// function calculateTimeLeft(unlockTime) {
+//   var currentTime = Date.now();
+//   var timeDifference = parseInt(unlockTime) - currentTime;
 
-  var seconds = Math.floor((timeDifference / 1000) % 60);
-  var minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
-  var hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
-  var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+//   var seconds = Math.floor((timeDifference / 1000) % 60);
+//   var minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+//   var hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+//   var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
+//   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+// }
 
 const wax_top_stakers_data = async () => {
   try {
@@ -544,3 +520,23 @@ const parse_numbers = (value) => {
     return (value / 1).toFixed(2);
   }
 };
+
+function calculateClaim(staked_amount, last_claim) {
+  let current_time = Date.now();
+  let elapsed_time = (current_time - parseInt(last_claim)) / 1000;
+  // const apy = 0.1; // 10% APY
+  const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
+  let claim_amount = staked_amount * reward_per_second * elapsed_time;
+  return claim_amount;
+}
+
+function parseToken(_token) {
+  if (_token == undefined) {
+    return 0;
+  } else {
+    //token -> '1.00000000 WAX'
+    // console.log(_token)
+    let array = _token.split(" "); //["1.00000000","WAX"]
+    return parseFloat(array[0]);
+  }
+}
