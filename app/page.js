@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../app/Home.css";
 import LogoAnimation from "./components/LogoAnimation";
 const MainPage = () => {
@@ -13,7 +13,7 @@ const MainPage = () => {
             Receive Tokens on the WAX Blockchain within Your Beloved Telegram
             Group! No need for a WAX wallet or worrying about fees! Engage your
             group members with exciting features such as emoji tips, drops,
-            giveaways, and more! It's a whole new way to interact with your
+            giveaways, and more! It&apos;s a whole new way to interact with your
             community. Join us today and revolutionize your Telegram experience!
           </p>
           <span id="btn-box">

@@ -62,21 +62,15 @@ const tokens = [
 ];
 
 const LogoAnimation = () => {
-//   useEffect(() => {
-//     displayImage();
-//   }, []);
 
-//   function displayImage() {
-//     var copy = document.querySelector("#logo-items").cloneNode(true);
-//     document.querySelector(".logos").appendChild(copy);
-//   }
   return (
     <section id="section-3">
       {/* <!-- <h3>Supported Tokens</h3> --> */}
       <div className="logos">
         <div id="logo-items" className="logos-slide">
           {tokens.map((token) => {
-            return <img src={`${token}.png`} alt={token} key={token}/>;
+            let url = `${token}.png`;
+            return <img src={url} alt={token} key={token}/>;
           })}
         </div>
       </div>
