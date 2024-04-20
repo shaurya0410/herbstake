@@ -1,545 +1,136 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Calculator from "./components/Calculator";
-// import Button from "./components/Button";
-import Modal from "./components/Modal";
-import Login from "./components/Login";
-import TopStaked from "./components/TopStaked";
-import Stats from "./components/Stats";
-import * as waxjs from "@waxio/waxjs/dist";
-const wax = new waxjs.WaxJS({
-  rpcEndpoint: "https://wax.greymass.com",
-  // tryAutoLogin: false,
-});
-
-import AnchorLink from "anchor-link";
-import AnchorLinkBrowserTransport from "anchor-link-browser-transport";
-import StakingLevel from "./components/StakingLevel";
-import Staking from "./components/Staking";
-
-const transport = new AnchorLinkBrowserTransport();
-const link = new AnchorLink({
-  transport,
-  chains: [
-    {
-      chainId:
-        "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4",
-      nodeUrl: "https://wax.greymass.com",
-    },
-  ],
-});
+import "../app/Home.css";
+import LogoAnimation from "./components/LogoAnimation";
 const MainPage = () => {
-  const [lastClaim, setLastClaim] = useState(0);
-  const [claim, setClaim] = useState(0);
-  const [unlockCooldown, setUnlockCooldown] = useState(0);
-  const [staked, setStaked] = useState(0);
-  const [unstaked, setUnstaked] = useState(0);
-
-  const [info, setInfo] = useState({
-    total_staked: "0.0000 HERB",
-    total_unstaked: "0.0000 HERB",
-    base_apr: 0,
-  });
-
-  const [loginModal, setLoginModal] = useState(false);
-  const [wallet, setWallet] = useState("wax"); //anchor
-  const [session, setSession] = useState("");
-  const [type, setType] = useState("");
-  const [modal, setModal] = useState(false);
-  const [isuser, setIsUser] = useState(false);
-  const [topstakers, setTopstakers] = useState([]);
-  const [user, setUser] = useState({
-    owner: "",
-    // staked_amount: "0.0000 HERB",
-    // claim: "0.0000",
-    // last_claim: "0",
-    // unstaked_amount: "0.0000 HERB",
-    // unlock_cooldown: "0",
-    balance: "0",
-  });
-
-  async function getData(owner) {
-    try {
-      let [staked, unstaked, balance, top, info] = await Promise.all([
-        wax_staked_data(owner),
-        wax_unstaked_data(owner),
-        herb_balance(owner),
-        wax_top_stakers_data(),
-        wax_info(),
-      ]);
-
-      // console.log(balance);
-
-      if (balance == -1) {
-        balance = 0;
-      }
-      if (top != -1) {
-        setTopstakers(top);
-      }
-      if (info != -1) {
-        setInfo(info);
-      }
-
-      // let last_claim = 0;
-      // let claim = "0.0000";
-      // let staked_amount = "0.0000 HERB";
-      // let unstaked_amount = "0.0000 HERB";
-      // let unlock_cooldown = 0;
-
-      if (staked != -1) {
-        setStaked(parseToken(staked.quantity));
-        setClaim(
-          calculateClaim(
-            parseToken(staked.quantity),
-            new Date(staked.last_claim + "Z").getTime()
-          )
-        );
-        setLastClaim(new Date(staked.last_claim + "Z").getTime());
-
-        // console.log(staked.last_claim);
-        // last_claim = new Date(staked.last_claim + "Z").getTime();
-        // claim = calculateClaim(staked.quantity, last_claim);
-        // staked_amount = staked.quantity;
-      }
-
-      if (unstaked != -1) {
-        setUnstaked(parseToken(unstaked.quantity));
-
-        setUnlockCooldown(new Date(unstaked.unlock_time + "Z").getTime());
-
-        // console.log(unstaked);
-        // unlock_cooldown = new Date(unstaked.unlock_time + "Z").getTime();
-        // console.log(unlock_cooldown);
-        // unstaked_amount = unstaked.quantity;
-        // alert(new Date(unstaked.unlock_time).getTime());
-      }
-
-      setUser((previous_obj) => ({
-        ...previous_obj,
-        owner,
-        // staked_amount,
-        // claim,
-        // last_claim,
-        balance,
-        // unstaked_amount,
-        // unlock_cooldown,
-      }));
-    } catch (error) {
-      alert(error);
-    }
-  }
-
-  // function calculateClaim(quantity, last_claim) {
-  //   // console.log(quantity);
-  //   let asset = quantity.split(" ");
-  //   let staked_amount = parseFloat(asset[0]);
-  //   // console.log(staked_amount);
-  //   let current_time = Date.now();
-  //   let elapsed_time = (current_time - parseInt(last_claim)) / 1000;
-  //   // const apy = 0.1; // 10% APY
-  //   const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
-  //   let claim_amount = (
-  //     staked_amount *
-  //     reward_per_second *
-  //     elapsed_time
-  //   ).toFixed(4);
-  //   setRph(staked_amount * reward_per_second * 60 * 60);
-  //   // console.log(reward_per_second);
-  //   // console.log(claim_amount);
-  //   return claim_amount;
-  // }
-
-  function reset() {
-    setTopstakers([]);
-    setUser({
-      owner: "",
-      // staked_amount: "0.0000 HERB",
-      // claim: "0.0000",
-      // last_claim: 0,
-      balance: "0",
-      // unstaked_amount: "0.0000 HERB",
-      // unlock_cooldown: 0,
-    });
-    setClaim(0);
-    setStaked(0);
-    setUnlockCooldown(0);
-    setLastClaim(0);
-    setUnstaked(0);
-  }
-
-  // if (isuser) {
-  //   setInterval(() => {
-  //     console.log("1");
-  //     setUser((prevObject) => ({
-  //       ...prevObject, // Spread previous object properties
-  //       unlock_cooldown:
-  //         prevObject.unlock_cooldown > 0 ? prevObject.unlock_cooldown + 1 : 0, // Update only the desired property
-  //       claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
-  //       last_claim: prevObject.last_claim + 1,
-  //     }));
-  //   }, 1000);
-  // }
-
-  const wax_transact = async (_owner, _quantity = 1, type) => {
-    try {
-      let data = {};
-      if (type == "stake") {
-        data = {
-          from: _owner,
-          to: contract,
-          quantity: `${parseFloat(_quantity).toFixed(4)} HERB`,
-          memo: type,
-        };
-      } else if (type == "unstake" || type == "restake") {
-        data = {
-          owner: _owner,
-          quantity: `${parseFloat(_quantity).toFixed(4)} HERB`,
-        };
-      } else if (type == "redeem" || type == "claim") {
-        data = {
-          owner: _owner,
-        };
-      }
-
-      if (wallet == "wax") {
-        const result = await wax.api.transact(
-          {
-            actions: [
-              {
-                account: type == "stake" ? "naturestoken" : contract,
-                name: type == "stake" ? "transfer" : type,
-                authorization: [
-                  {
-                    actor: _owner,
-                    permission: "active",
-                  },
-                ],
-                data: data,
-              },
-            ],
-          },
-          {
-            blocksBehind: 3,
-            expireSeconds: 1200,
-          }
-        );
-
-        return { value: 1, message: result.transaction_id };
-      } else {
-        const action = {
-          account: type == "stake" ? "naturestoken" : contract,
-          name: type == "stake" ? "transfer" : type,
-          authorization: [session.auth],
-          data: data,
-        };
-
-        const tx = await session.transact({ action });
-        return { value: 1, message: tx.processed.id };
-      }
-    } catch (error) {
-      // return -1;
-      return { value: -1, message: error.message };
-    }
-  };
-
-  // if (user.last_claim > 0) {
-  //   setTimeout(() => {
-  //     setUser((prevObject) => ({
-  //       ...prevObject, // Spread previous object properties
-  //       claim: calculateClaim(prevObject.staked_amount, prevObject.last_claim),
-  //       last_claim: prevObject.last_claim + 1, // Update only the desired property
-  //     }));
-  //   }, 5000);
-  // }
-
   return (
-    <div className="staking_container">
-      <div className="wallet_balance">
-        {/* <span>Balance:</span> */}
-        <span>{`${user.balance} HERB`}</span>
-      </div>
-      <div className="wallet_box">
-        {!isuser ? (
-          <button
-            className="btn"
-            onClick={() => {
-              setLoginModal(true);
-            }}
-          >
-            {`connect`}
-          </button>
-        ) : (
-          <button
-            className="btn"
-            onClick={async () => {
-              try {
-                wax.logout();
-                if (session) {
-                  session.remove();
-                }
-                setIsUser(false);
-                reset();
-                setWallet("");
-              } catch (error) {
-                console.log(error);
-              }
-            }}
-          >
-            {`${user.owner}`}
-          </button>
-        )}
-      </div>
+    <>
+      <section id="section-1">
+        <div>
+          <h2>Share WAX Blockchain Tokens with Your Friends on Telegram!</h2>
+          <p>
+            Introducing @HerbTipBot - Your Gateway to Seamlessly Send and
+            Receive Tokens on the WAX Blockchain within Your Beloved Telegram
+            Group! No need for a WAX wallet or worrying about fees! Engage your
+            group members with exciting features such as emoji tips, drops,
+            giveaways, and more! It's a whole new way to interact with your
+            community. Join us today and revolutionize your Telegram experience!
+          </p>
+          <span id="btn-box">
+            <a href="https://t.me/HerbTipBot" target="_b" id="start-btn">
+              Get started
+            </a>
+            <a href="https://t.me/HerbTipBot" target="_b" id="list-btn">
+              List Token
+            </a>
+          </span>
+        </div>
+        <div>
+          <img src="banner.png" alt="tipbot" />
+        </div>
+      </section>
 
-      {staked + unstaked > 0 && (
-        <Staking
-          isuser={isuser}
-          staked={staked}
-          claim={claim}
-          setClaim={setClaim}
-          lastClaim={lastClaim}
-          unstaked={unstaked}
-          unlockCooldown={unlockCooldown}
-          setModal={setModal}
-          setType={setType}
-          info={info}
-        />
-      )}
+      <section id="section-2">
+        <h3>Play with HERB</h3>
+        <div className="box">
+          <a href="https://t.me/chat_herb" target="_b">
+            <img src="chat.svg" alt="logo" />
+            <span>Chat Mining</span>
+            <p>Join our official telegram group!</p>
+          </a>
 
-      <h2 style={{marginTop:'2rem'}}>Calculator</h2>
-      <Calculator parse_numbers={parse_numbers} info={info} />
-      <hr
-        style={{
-          color: "white",
-          opacity: "0.5",
-          width: "80vw",
-          margin: "1rem",
-        }}
-      />
-      <h2>Stats</h2>
-      <Stats info={info} parse_numbers={parse_numbers} />
-      <hr
-        style={{
-          color: "white",
-          opacity: "0.5",
-          width: "80vw",
-          margin: "1rem",
-        }}
-      />
-      <h2>Staking Levels</h2>
-      <StakingLevel />
-      <hr
-        style={{
-          color: "white",
-          opacity: "0.5",
-          width: "80vw",
-          margin: "1rem",
-        }}
-      />
-      <h2>Top Stakers</h2>
-      <TopStaked topstakers={topstakers} parse_numbers={parse_numbers} />
-      {modal && (
-        <Modal
-          setModal={setModal}
-          transact={wax_transact}
-          user={user}
-          type={type}
-          getData={getData}
-          parse_numbers={parse_numbers}
-          staked={staked}
-          unstaked={unstaked}
-        />
-      )}
-      {loginModal && (
-        <Login
-          setLoginModal={setLoginModal}
-          getData={getData}
-          setSession={setSession}
-          setIsUser={setIsUser}
-          setWallet={setWallet}
-          link={link}
-          wax={wax}
-        />
-      )}
-    </div>
+          <a
+            href="https://wax.alcor.exchange/trade/herb-naturestoken_wax-eosio.token"
+            target="_b"
+          >
+            <img src="exchange.svg" alt="logo" />
+            <span>Herb on Exchange</span>
+            <p>HERB/WAX pair is avilable on spot market for trade.</p>
+          </a>
+
+          <a
+            href="https://wax.alcor.exchange/swap?input=WAX-eosio.token&output=HERB-naturestoken"
+            target="_b"
+          >
+            <img src="swap.svg" alt="logo" />
+            <span>Herb on Dex</span>
+            <p>Herb can be swapped for another tokens on dex.</p>
+          </a>
+
+          <a href="https://swap.tacocrypto.io/meal?search=Herb" target="_b">
+            <img src="farm.svg" alt="logo" />
+            <span>Liquidity Farming</span>
+            <p>Earn reward by stacking your LP token on dex.</p>
+          </a>
+        </div>
+      </section>
+
+      <section id="section-4">
+        <h3>Commands</h3>
+        <ul>
+          <li>
+            <b>/help - </b>
+            <span>Display commands and usage instructions.</span>
+          </li>
+          <li>
+            <b>/balance - </b>
+            <span>Check your token balance.</span>
+            <span className="command-syntax">[/balance HERB]</span>
+          </li>
+          <li>
+            <b>/tip - </b>
+            <span>
+              Send any amount of token to any user by replying there message
+              with tip command.
+            </span>
+            <span className="command-syntax">[/tip 1 HERB]</span>
+          </li>
+          <li>
+            <b>/drop - </b>
+            <span>
+              Airdrop 1 HERB token to 10 active active member, they must claim
+              it within 10 minutes.
+            </span>
+            <span className="command-syntax">[/drop 1 HERB 10]</span>
+          </li>
+          <li>
+            <b>/giveaway - </b>
+            <span>
+              Do giveaways of 10 HERB tokens, bot will pick 1 winner from
+              participants list after 60 seconds.
+            </span>
+            <span className="command-syntax">[/giveaway 10 HERB 60]</span>
+          </li>
+          <li>
+            <b>/deposit - </b>
+            <span>Get your deposit details.</span>
+          </li>
+          <li>
+            <b>/whitelist - </b>
+            <span>Check supported tokens.</span>
+          </li>
+          <li>
+            <b>/withdraw - </b>
+            <span>Withdraw any amount of tokens to your wallet address.</span>
+            <span className="command-syntax">
+              [/withdraw 1 HERB memo account]
+            </span>
+          </li>
+          <li>
+            <b>/price - </b>
+            <span>To check current price and details of token.</span>
+            <span className="command-syntax">[/price HERB]</span>
+          </li>
+          <li>
+            <b>/rain - </b>
+            <span>Distribute token to active users.</span>
+            <span className="command-syntax">[/rain 1 HERB 1h]</span>
+          </li>
+        </ul>
+      </section>
+      <LogoAnimation />
+    </>
   );
 };
 
 export default MainPage;
-
-//functions
-let contract = "stake.herb";
-const wax_staked_data = async (_owner) => {
-  try {
-    // console.log(process.env.CONTRACT);
-    const data = await wax.rpc.get_table_rows({
-      json: true,
-      code: contract,
-      scope: contract,
-      table: "stakes",
-      lower_bound: _owner,
-      limit: 1,
-      reverse: false,
-      show_payer: false,
-    });
-
-    let owner = data.rows[0].owner;
-    if (_owner == owner) {
-      return data.rows[0];
-    } else {
-      return -1;
-    }
-  } catch (error) {
-    console.log(error);
-    return -1;
-  }
-};
-
-const wax_unstaked_data = async (_owner) => {
-  try {
-    // console.log(process.env.CONTRACT);
-    const data = await wax.rpc.get_table_rows({
-      json: true,
-      code: contract,
-      scope: contract,
-      table: "unstakes",
-      lower_bound: _owner,
-      limit: 1,
-      reverse: false,
-      show_payer: false,
-    });
-
-    let owner = data.rows[0].owner;
-    if (_owner == owner) {
-      return data.rows[0];
-    } else {
-      return -1;
-    }
-  } catch (error) {
-    console.log(error);
-    return -1;
-  }
-};
-
-// function calculateTimeLeft(unlockTime) {
-//   var currentTime = Date.now();
-//   var timeDifference = parseInt(unlockTime) - currentTime;
-
-//   var seconds = Math.floor((timeDifference / 1000) % 60);
-//   var minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
-//   var hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
-//   var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-//   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-// }
-
-const wax_top_stakers_data = async () => {
-  try {
-    // console.log(process.env.CONTRACT);
-    const data = await wax.rpc.get_table_rows({
-      json: true,
-      code: contract,
-      scope: contract,
-      table: "stakes",
-      // lower_bound: _owner,
-      limit: 500,
-      reverse: false,
-      show_payer: false,
-    });
-    let newData = [];
-    data.rows.forEach((element) => {
-      let array = element.quantity.split(" ");
-      let amount = parseFloat(array[0]);
-      newData.push({ ...element, amount });
-    });
-    // console.log(newData);
-    return newData;
-  } catch (error) {
-    console.log(error);
-    return -1;
-  }
-};
-
-const herb_balance = async (owner) => {
-  try {
-    const data = await wax.rpc.get_table_rows({
-      json: true, // Get the response as json
-      code: "naturestoken", // Contract that we target
-      scope: owner, // Account that owns the data
-      table: "accounts", // Table name
-      // lower_bound: _user, // Table primary key value
-      limit: 1, // Here we limit to 1 to get only the single row with primary key equal to 'testacc'
-      reverse: false, // Optional: Get reversed data
-      show_payer: false, // Optional: Show ram payer
-    });
-
-    // console.log(data.rows[0].balance);
-    // { balance: '19535.4435 HERB' }
-    const asset = data.rows[0].balance.split(" ");
-    // console.log(asset);
-
-    if (asset[1] == "HERB") {
-      return asset[0];
-    } else {
-      return -1;
-    }
-  } catch (error) {
-    // console.log(error);
-    return -1;
-  }
-};
-
-const wax_info = async () => {
-  try {
-    // console.log(process.env.CONTRACT);
-    const data = await wax.rpc.get_table_rows({
-      json: true,
-      code: contract,
-      scope: contract,
-      table: "stakeconfig",
-      // lower_bound: _owner,
-      limit: 1,
-      reverse: false,
-      show_payer: false,
-    });
-
-    return data.rows[0];
-  } catch (error) {
-    console.log(error);
-    return -1;
-  }
-};
-
-//helper function
-const parse_numbers = (value) => {
-  if (value >= 1000000000000) {
-    return (value / 1000000000000).toFixed(2) + "T";
-  } else if (value >= 1000000000) {
-    return (value / 1000000000).toFixed(2) + "B";
-  } else if (value >= 1000000) {
-    return (value / 1000000).toFixed(2) + "M";
-  } else if (value >= 1000) {
-    return (value / 1000).toFixed(2) + "K";
-  } else {
-    return (value / 1).toFixed(2);
-  }
-};
-
-function calculateClaim(staked_amount, last_claim) {
-  let current_time = Date.now();
-  let elapsed_time = (current_time - parseInt(last_claim)) / 1000;
-  // const apy = 0.1; // 10% APY
-  const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
-  let claim_amount = staked_amount * reward_per_second * elapsed_time;
-  return claim_amount;
-}
-
-function parseToken(_token) {
-  if (_token == undefined) {
-    return 0;
-  } else {
-    //token -> '1.00000000 WAX'
-    // console.log(_token)
-    let array = _token.split(" "); //["1.00000000","WAX"]
-    return parseFloat(array[0]);
-  }
-}

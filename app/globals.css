@@ -4,7 +4,7 @@ html {
 
 @media screen and (min-width: 50rem) {
   html {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 
@@ -172,8 +172,8 @@ h2 {
   width: 90vw;
   height: auto;
   padding: 1rem;
-  margin-bottom: 2rem;
   border-radius: 6px;
+  margin-bottom: 5rem;
 }
 
 .top_items {
@@ -231,24 +231,24 @@ h2 {
 
 .wallet_balance {
   display: flex;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 1);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   justify-content: center;
   align-items: center;
   padding: 0.7rem;
   position: absolute;
-  top: 1rem;
+  top: 7rem;
   left: 1rem;
   letter-spacing: 1px;
   font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .wallet_box {
   position: absolute;
-  top: 0rem;
+  top: 6rem;
   right: 0.5rem;
   margin: 0.5rem;
   padding: 0.5rem;
