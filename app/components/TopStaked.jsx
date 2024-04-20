@@ -23,7 +23,7 @@ const TopStaked = ({ topstakers, parse_numbers }) => {
               <span className="top_index">{numToLogo(index + 1)}</span>
               <span className="top_owner">{element.owner}</span>
               <span className="top_bonus">
-                {calculateBonus(element.amount)}
+                {calculateMultiplier(element.amount)}x
               </span>
               <div className="top_quantity">
                 <span>{parse_numbers(element.amount)}</span>
@@ -50,18 +50,24 @@ const numToLogo = (num) => {
   }
 };
 
-function calculateBonus(amount) {
+function calculateMultiplier(amount) {
   if (amount >= 100000) {
-    return "100%";
+    // return "100%";
+    return 2;
   } else if (amount >= 50000) {
-    return "50%";
+    // return "50%";
+    return 1.5;
   } else if (amount >= 25000) {
-    return "25%";
+    // return "25%";
+    return 1.25;
   } else if (amount >= 10000) {
-    return "10%";
+    // return "10%";
+    return 1.1;
   } else if (amount >= 5000) {
-    return "5%";
+    // return "5%";
+    return 1.5;
   } else {
-    return "0%";
+    // return "0%";
+    return 1;
   }
 }
