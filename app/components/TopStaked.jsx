@@ -11,7 +11,7 @@ const TopStaked = ({ topstakers, parse_numbers }) => {
       >
         <span style={{ textAlign: "left" }}>RANK</span>
         <span>OWNER</span>
-        <span>MULTIPLIER</span>
+        <span>MINING MULTIPLIER</span>
         <span style={{ textAlign: "right" }}>STAKED</span>
       </div>
       {topstakers
@@ -65,7 +65,7 @@ function calculateMultiplier(amount) {
     return 1.1;
   } else if (amount >= 5000) {
     // return "5%";
-    return 1.5;
+    return 1.05;
   } else {
     // return "0%";
     return 1;
