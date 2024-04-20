@@ -23,9 +23,6 @@ export default function RootLayout({ children }) {
               <Link href={"/"}>HOME</Link>
             </li>
             <li>
-              <a href="/#section-4">COMMANDS</a>
-            </li>
-            <li>
               <Link href={"/stake"}>STAKE</Link>
             </li>
           </ul>

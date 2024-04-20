@@ -13,15 +13,15 @@ body {
 }
 
 #logo {
-    /* margin-left: 4rem; */
+    margin-left: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #logo img {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
 }
 
 /* #logo p{
@@ -56,10 +56,10 @@ nav ul {
 
 nav ul li a{
     text-decoration: none;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: var(--text-color);
-    padding: 1rem;
+    padding: 0.5rem;
     cursor: pointer;
     letter-spacing: 1px;
 }
@@ -105,20 +105,20 @@ section {
 
 #section-1 img {
     /* width: 35rem; */
-    width: 70%;
+    width: 80%;
 }
 
 #section-1 div h2 {
     font-weight: bolder;
     color: #29741d;
-    font-size: 2.8rem;
+    font-size: 2.4rem;
     text-align: center;
 }
 
 #section-1 div p {
     font-weight: 400;
     /* color:#a6d71c; */
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     text-align: center;
     /* color: white; */
     font-family:'Courier New', Courier, monospace;
@@ -259,22 +259,22 @@ width: 90%;
 height: auto;
 border: 1px sold black;
 background-color: rgba(0, 255, 17, 0.05);
-font-size: 1.8rem;
+font-size: 1.4rem;
 }
 
 #section-4 ul li{
-padding: 2rem;
+padding: 1.5rem;
 }
 
 #section-4 ul li span{
     color:#0097b2;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 #section-4 ul li .command-syntax{
     color:rgba(255, 255, 255, 0.7);
     padding: .5rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .logos {
@@ -288,13 +288,13 @@ padding: 2rem;
 
 .logos-slide {
     display: inline-block;
-    animation: 15s slide infinite linear;
+    animation: 25s slide infinite linear;
     /* border: 1px solid white; */
 }
 
 .logos-slide img {
     width: 4rem;
-    margin: 1rem 5rem;
+    margin: 1rem 4rem;
     /* border: 1px solid white; */
 }
 
@@ -343,7 +343,7 @@ footer {
     margin: 0.1rem;
     color: var(--text-color);
     opacity: 0.5;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     text-align: center;
     position: fixed;

@@ -26,7 +26,7 @@ const Staking = ({
     <>
       <div className="staking_reward">
         {/* <h2>Claimable Earning</h2> */}
-        <h2 className="main_heading" style={{marginTop:'9rem'}}>Staking Information</h2>
+        <h2 className="main_heading" style={{marginTop:'8rem'}}>Staking Information</h2>
         <div className="claim_box">
           <span className="claim_amount">
             <img src="HERB.png" alt="" />
