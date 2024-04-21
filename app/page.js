@@ -60,7 +60,7 @@ const MainPage = () => {
           <a href="https://swap.tacocrypto.io/meal?search=Herb" target="_b">
             <img src="farm.svg" alt="logo" />
             <span>Liquidity Farming</span>
-            <p>Earn reward by stacking your LP token on dex.</p>
+            <p>Earn reward by staking your LP token on dex.</p>
           </a>
         </div>
       </section>
