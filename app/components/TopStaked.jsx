@@ -16,21 +16,21 @@ const TopStaked = ({ topstakers, parse_numbers }) => {
       </div>
       {topstakers
         .sort((a, b) => b.amount - a.amount)
-        .slice(0, 20)
+        .slice(1, 21)
         .map((element, index) => {
-          return (
-            <div className="top_items" key={element.owner}>
-              <span className="top_index">{numToLogo(index + 1)}</span>
-              <span className="top_owner">{element.owner}</span>
-              <span className="top_bonus">
-                {calculateMultiplier(element.amount)}x
-              </span>
-              <div className="top_quantity">
-                <span>{parse_numbers(element.amount)}</span>
-                <img src="HERB.png" alt="" />
+            return (
+              <div className="top_items" key={element.owner}>
+                <span className="top_index">{numToLogo(index + 1)}</span>
+                <span className="top_owner">{element.owner}</span>
+                <span className="top_bonus">
+                  {calculateMultiplier(element.amount)}x
+                </span>
+                <div className="top_quantity">
+                  <span>{parse_numbers(element.amount)}</span>
+                  <img src="HERB.png" alt="" />
+                </div>
               </div>
-            </div>
-          );
+            );
         })}
     </div>
   );

@@ -36,8 +36,8 @@ const StakingPage = () => {
   const [lastClaim, setLastClaim] = useState(0);
   const [claim, setClaim] = useState(0);
   const [unlockCooldown, setUnlockCooldown] = useState(0);
-  const [staked, setStaked] = useState(0);
-  const [unstaked, setUnstaked] = useState(0);
+  const [staked, setStaked] = useState(-1);
+  const [unstaked, setUnstaked] = useState(-1);
 
   const [info, setInfo] = useState({
     total_staked: "0.0000 HERB",
@@ -233,7 +233,7 @@ const StakingPage = () => {
         )}
       </div>
 
-      {staked + unstaked > 0 ? (
+      {staked != -1? (
         <Staking
           isuser={isuser}
           staked={staked}
