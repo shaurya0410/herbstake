@@ -30,9 +30,9 @@ const link = new AnchorLink({
 });
 const StakingPage = () => {
   useEffect(() => {
-   getInitialData();
+    getInitialData();
   }, []);
-  
+
   const [lastClaim, setLastClaim] = useState(0);
   const [claim, setClaim] = useState(0);
   const [unlockCooldown, setUnlockCooldown] = useState(0);
@@ -58,10 +58,7 @@ const StakingPage = () => {
   });
 
   async function getInitialData(params) {
-    let [top, info] = await Promise.all([
-      wax_top_stakers_data(),
-      wax_info(),
-    ]);
+    let [top, info] = await Promise.all([wax_top_stakers_data(), wax_info()]);
 
     if (top != -1) {
       setTopstakers(top);
@@ -109,6 +106,10 @@ const StakingPage = () => {
         setUnlockCooldown(new Date(unstaked.unlock_time + "Z").getTime());
       }
 
+      //i not staked and unstaked
+      setStaked(0);
+      setUnstaked(0);
+
       setUser((previous_obj) => ({
         ...previous_obj,
         owner,
@@ -126,12 +127,11 @@ const StakingPage = () => {
       balance: "0",
     });
     setClaim(0);
-    setStaked(0);
     setUnlockCooldown(0);
     setLastClaim(0);
-    setUnstaked(0);
+    setStaked(-1);
+    setUnstaked(-1);
   }
-
 
   const wax_transact = async (_owner, _quantity = 1, type) => {
     try {
@@ -233,7 +233,7 @@ const StakingPage = () => {
         )}
       </div>
 
-      {staked != -1? (
+      {staked != -1 ? (
         <Staking
           isuser={isuser}
           staked={staked}
@@ -364,7 +364,6 @@ const wax_unstaked_data = async (_owner) => {
     return -1;
   }
 };
-
 
 const wax_top_stakers_data = async () => {
   try {
