@@ -74,8 +74,6 @@ const StakingPage = () => {
         wax_staked_data(owner),
         wax_unstaked_data(owner),
         herb_balance(owner),
-        // wax_top_stakers_data(),
-        // wax_info(),
       ]);
 
       // console.log(balance);
@@ -83,12 +81,10 @@ const StakingPage = () => {
       if (balance == -1) {
         balance = 0;
       }
-      // if (top != -1) {
-      //   setTopstakers(top);
-      // }
-      // if (info != -1) {
-      //   setInfo(info);
-      // }
+
+      //if not staked and unstaked
+      setStaked(0);
+      setUnstaked(0);
 
       if (staked != -1) {
         setStaked(parseToken(staked.quantity));
@@ -105,10 +101,6 @@ const StakingPage = () => {
         setUnstaked(parseToken(unstaked.quantity));
         setUnlockCooldown(new Date(unstaked.unlock_time + "Z").getTime());
       }
-
-      //i not staked and unstaked
-      setStaked(0);
-      setUnstaked(0);
 
       setUser((previous_obj) => ({
         ...previous_obj,
