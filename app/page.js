@@ -128,6 +128,31 @@ const MainPage = () => {
           </li>
         </ul>
       </section>
+      {/* <section id="section-5">
+        <h3>
+          <span style={{ color: "lightgreen" }}>$HERB </span>TOKENOMICS
+        </h3>
+        <p>Max Supply: 10M</p>
+        <table>
+          <tr>
+            <th>Liquidity</th>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <th>Staking & LP Reward</th>
+            <td>40%</td>
+          </tr>
+          <tr>
+            <th>Developer and Team</th>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <th>Marketing Fund</th>
+            <td>10%</td>
+          </tr>
+        </table>
+      </section> */}
+
       <LogoAnimation />
     </>
   );

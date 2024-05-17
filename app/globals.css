@@ -265,11 +265,11 @@ h2 {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-table {
+.staking_level_box table {
   width: 100%;
 }
 
-th {
+.staking_level_box th {
   /* border: 1px solid white; */
   font-size: 1.2rem;
   font-weight: 700;
@@ -278,7 +278,7 @@ th {
   letter-spacing: 1px;
 }
 
-td {
+.staking_level_box td {
   /* border: 1px solid white; */
   margin: 1rem;
   padding: 0.5rem;
