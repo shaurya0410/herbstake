@@ -1,8 +1,13 @@
+'use client'
 import React from "react";
 import "./Tokenomics.css";
+import PieChart from "../components/PieChart";
+
 const Tokenomics = () => {
   return (
     <div id="tokenomics_box">
+      <div>
+      </div>
       <div className="table_outer_box">
         <h2>$HERB Tokenomics</h2>
         <div className="table_box">
@@ -38,7 +43,7 @@ const Tokenomics = () => {
           </div>
           <div>
             <span>LP Reward</span>
-            <span>15%</span>
+            <span>10%</span>
           </div>
           <div>
             <span>Marketing and Promotion</span>
@@ -46,7 +51,7 @@ const Tokenomics = () => {
           </div>
           <div>
             <span>Team</span>
-            <span>5%</span>
+            <span>10%</span>
           </div>
           <div>
             <span>Project Development</span>
@@ -60,7 +65,13 @@ const Tokenomics = () => {
             <span>Treasure Fund</span>
             <span>20%</span>
           </div>
-          <small className="token_distribution_note">This distribution plan outlines how HERB will be allocated over a 3-year period, with 250,000 HERB being allocated each month. Each category receives a percentage of the monthly allocation as specified in the distribution model.</small>
+          <small className="token_distribution_note">
+            This distribution plan outlines how HERB will be allocated over a
+            2-year period, with 160,000 HERB being allocated each month. Each
+            category receives a percentage of the monthly allocation as
+            specified in the distribution model.
+          </small>
+       <PieChart/>
         </div>
         <hr style={{ width: "80%", opacity: "0.15" }} />
       </div>
@@ -72,7 +83,8 @@ const Tokenomics = () => {
             <span className="utility_heading">
               25% Token Listing Discount:{" "}
             </span>
-            Get 25% discount on token listings within herbtipbot when paying fees in herb.
+            Get 25% discount on token listings within herbtipbot when paying
+            fees in herb.
           </li>
           <li>
             <span className="utility_heading">
