@@ -20,12 +20,12 @@ const Tokenomics = () => {
             <span>naturestoken</span>
           </div>
           <div>
-            <span>Max Supply:</span>
-            <span>10,000,000 HERB</span>
-          </div>
-          <div>
             <span>Circulating Supply:</span>
             <span>1,000,000 HERB</span>
+          </div>
+          <div>
+            <span>Max Supply:</span>
+            <span>10,000,000 HERB</span>
           </div>
         </div>
         <hr style={{ width: "80%", opacity: "0.15" }} />
@@ -38,15 +38,15 @@ const Tokenomics = () => {
             <span>10%</span>
           </div>
           <div>
-            <span>Chat Mining Reward:</span>
-            <span>10%</span>
-          </div>
-          <div>
             <span>LP Reward</span>
-            <span>10%</span>
+            <span>12.5%</span>
           </div>
           <div>
-            <span>Marketing and Promotion</span>
+            <span>Chat Mining Reward:</span>
+            <span>7.5%</span>
+          </div>
+          <div>
+            <span>Airdrop and Promotion</span>
             <span>10%</span>
           </div>
           <div>

@@ -32,20 +32,20 @@ const PieChart = () => {
   const data = {
     // data: {
     labels: [
-      "LP Reward",
-      "Marketing and Promotion",
-      "Project Development",
-      "Treasure Fund",
-      "LP and exchange",
       "Staking Reward",
-      "Chat Mining Reward",
+      "LP Reward",
+      "Mining Reward",
+      "Airdrop & Promotion",
       "Team",
+      "Project Development",
+      "LP & exchange",
+      "Treasure Fund",
     ],
     // },
     datasets: [
       {
         label: "allocation percentage",
-        data: [15, 20, 20, 10, 10, 10, 5, 10],
+        data: [10, 12.5, 7.5, 10, 10, 20, 10, 20],
         backgroundColor: [
           "rgba(255, 182, 193, 0.8)",
           "rgba(135, 206, 250, 0.8)",
