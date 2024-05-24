@@ -18,19 +18,19 @@ const TopStaked = ({ topstakers, parse_numbers }) => {
         .sort((a, b) => b.amount - a.amount)
         .slice(1, 21)
         .map((element, index) => {
-            return (
-              <div className="top_items" key={element.owner}>
-                <span className="top_index">{numToLogo(index + 1)}</span>
-                <span className="top_owner">{element.owner}</span>
-                <span className="top_bonus">
-                  {calculateMultiplier(element.amount)}x
-                </span>
-                <div className="top_quantity">
-                  <span>{parse_numbers(element.amount)}</span>
-                  <img src="HERB.png" alt="" />
-                </div>
+          return (
+            <div className="top_items" key={element.owner}>
+              <span className="top_index">{numToLogo(index + 1)}</span>
+              <span className="top_owner">{element.owner}</span>
+              <span className="top_bonus">
+                {calculateMultiplier(element.amount)}x
+              </span>
+              <div className="top_quantity">
+                <span>{parse_numbers(element.amount)}</span>
+                <img src="HERB.png" alt="" />
               </div>
-            );
+            </div>
+          );
         })}
     </div>
   );
@@ -51,19 +51,19 @@ const numToLogo = (num) => {
 };
 
 function calculateMultiplier(amount) {
-  if (amount >= 100000) {
-    // return "100%";
-    return 2;
-  } else if (amount >= 50000) {
+  if (amount >= 25000) {
     // return "50%";
     return 1.5;
-  } else if (amount >= 25000) {
-    // return "25%";
-    return 1.25;
+  } else if (amount >= 17500) {
+    // return "35%";
+    return 1.35;
   } else if (amount >= 10000) {
+    // return "20%";
+    return 1.2;
+  } else if (amount >= 5000) {
     // return "10%";
     return 1.1;
-  } else if (amount >= 5000) {
+  } else if (amount >= 2500) {
     // return "5%";
     return 1.05;
   } else {

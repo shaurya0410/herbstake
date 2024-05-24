@@ -50,7 +50,7 @@ const PieChart = () => {
           "rgba(255, 182, 193, 0.8)",
           "rgba(135, 206, 250, 0.8)",
           "rgba(144, 238, 144, 0.8)",
-          "rgba(255, 255, 224, 0.8)",
+          "rgba(176, 196, 222, 0.8)",
           "rgba(240, 128, 128, 0.8)",
           "rgba(255, 160, 122, 0.8)",
           "rgba(32, 178, 170, 0.8)",
@@ -63,7 +63,7 @@ const PieChart = () => {
     ],
   };
 
-  return <Pie options={options} data={data} width={"400px"} height={"400px"} />;
+  return <Pie options={options} data={data} width={"350px"} height={"350px"} />;
 };
 
 export default PieChart;

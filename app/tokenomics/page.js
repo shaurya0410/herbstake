@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import "./Tokenomics.css";
 import PieChart from "../components/PieChart";
@@ -6,8 +6,7 @@ import PieChart from "../components/PieChart";
 const Tokenomics = () => {
   return (
     <div id="tokenomics_box">
-      <div>
-      </div>
+      <div></div>
       <div className="table_outer_box">
         <h2>$HERB Tokenomics</h2>
         <div className="table_box">
@@ -33,6 +32,7 @@ const Tokenomics = () => {
       <div className="table_outer_box">
         <h2>$HERB Distribution Model</h2>
         <div className="table_box">
+          <PieChart />
           <div>
             <span>Staking Reward:</span>
             <span>10%</span>
@@ -67,11 +67,10 @@ const Tokenomics = () => {
           </div>
           <small className="token_distribution_note">
             This distribution plan outlines how HERB will be allocated over a
-            2-year period, with 160,000 HERB being allocated each month. Each
+            25-months period, with 160,000 HERB being allocated each month. Each
             category receives a percentage of the monthly allocation as
             specified in the distribution model.
           </small>
-       <PieChart/>
         </div>
         <hr style={{ width: "80%", opacity: "0.15" }} />
       </div>
@@ -81,9 +80,9 @@ const Tokenomics = () => {
         <ul className="utiity_box">
           <li>
             <span className="utility_heading">
-              25% Token Listing Discount:{" "}
+              10% Token Listing Discount:{" "}
             </span>
-            Get 25% discount on token listings within herbtipbot when paying
+            Get 10% discount on token listings within herbtipbot when paying
             fees in herb.
           </li>
           <li>
