@@ -1,8 +1,27 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 const TopStaked = ({ topstakers, parse_numbers }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  //get currnt page
+  // console.log(topstakers);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const totalPage = Math.ceil(topstakers.length / itemsPerPage);
+  console.log(totalPage);
+  // const currentItems = topstakers
+  //   .sort((a, b) => b.amount - a.amount)
+  //   .slice(indexOfFirstItem, indexOfLastItem);
+
   // console.log(topStakers);
+  function togglePage(value) {
+    // console.log("clicked");
+    if (value > 0 && value <= totalPage) {
+      setCurrentPage(value);
+    }
+  }
   return (
     <div className="top_box">
       <div
@@ -16,11 +35,13 @@ const TopStaked = ({ topstakers, parse_numbers }) => {
       </div>
       {topstakers
         .sort((a, b) => b.amount - a.amount)
-        .slice(1, 21)
+        .slice(indexOfFirstItem, indexOfLastItem)
         .map((element, index) => {
           return (
             <div className="top_items" key={element.owner}>
-              <span className="top_index">{numToLogo(index + 1)}</span>
+              <span className="top_index">
+                {numToLogo(index + 1 + (itemsPerPage * currentPage - itemsPerPage))}
+              </span>
               <span className="top_owner">{element.owner}</span>
               <span className="top_bonus">
                 {calculateMultiplier(element.amount)}x
@@ -32,6 +53,43 @@ const TopStaked = ({ topstakers, parse_numbers }) => {
             </div>
           );
         })}
+      <div className="paginationButton">
+        <span
+          onClick={() => {
+            togglePage(currentPage - 1);
+          }}
+        >
+          Prev
+        </span>
+        <span
+          onClick={() => {
+            togglePage(1);
+          }}
+        >
+          1
+        </span>
+        <span
+          onClick={() => {
+            togglePage(Math.floor(totalPage/2));
+          }}
+        >
+          {Math.floor(totalPage/2)}
+        </span>
+        <span
+          onClick={() => {
+            togglePage(totalPage);
+          }}
+        >
+          {totalPage}
+        </span>
+        <span
+          onClick={() => {
+            togglePage(currentPage + 1);
+          }}
+        >
+          Next
+        </span>
+      </div>
     </div>
   );
 };

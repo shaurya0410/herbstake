@@ -50,12 +50,12 @@ const StakingLevel = () => {
     <table>
       <thead>
         <tr>
-          <th>Benefits</th>
-          <th>Level-1</th>
-          <th>Level-2</th>
-          <th>Level-3</th>
-          <th>Level-4</th>
-          <th>Level-5</th>
+          <th>Perks</th>
+          <th>T1</th>
+          <th>T2</th>
+          <th>T3</th>
+          <th>T4</th>
+          <th>T5</th>
         </tr>
       </thead>
       <tbody>
