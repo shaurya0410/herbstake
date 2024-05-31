@@ -35,35 +35,31 @@ const Tokenomics = () => {
           <PieChart />
           <div>
             <span>Staking Reward:</span>
-            <span>10%</span>
-          </div>
-          <div>
-            <span>LP Reward</span>
-            <span>12.5%</span>
+            <span>8%</span>
           </div>
           <div>
             <span>Chat Mining Reward:</span>
-            <span>7.5%</span>
+            <span>7%</span>
           </div>
           <div>
-            <span>Airdrop and Promotion</span>
-            <span>10%</span>
+            <span>Airdrop and Marketing</span>
+            <span>18.5%</span>
           </div>
           <div>
             <span>Team</span>
-            <span>10%</span>
+            <span>7.5%</span>
           </div>
           <div>
             <span>Project Development</span>
             <span>20%</span>
           </div>
           <div>
-            <span>LP and exchange</span>
-            <span>10%</span>
+            <span>LP and LP Reward</span>
+            <span>25%</span>
           </div>
           <div>
-            <span>Treasure Fund</span>
-            <span>20%</span>
+            <span>Reserve Fund</span>
+            <span>15%</span>
           </div>
           <small className="token_distribution_note">
             This distribution plan outlines how HERB will be allocated over a
