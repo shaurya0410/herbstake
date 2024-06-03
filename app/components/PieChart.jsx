@@ -52,7 +52,7 @@ const PieChart = () => {
   };
 
   return (
-      <Pie options={options} data={data} width={"300px"} height={"300px"}/>
+      <Pie options={options} data={data} width={"280px"} height={"280px"}/>
   );
 };
 

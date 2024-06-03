@@ -13,7 +13,7 @@ body {
 }
 
 #logo {
-  margin-left: 1rem;
+  margin-left: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,6 +44,7 @@ nav {
   left: 0;
   right: 0;
   z-index: 5;
+  font-family: "Poppins", sans-serif;
 }
 
 nav ul {
@@ -52,16 +53,20 @@ nav ul {
   justify-content: center;
   list-style: none;
   /* border: 1px solid #a6d71c; */
+  position: absolute;
+  right: 2rem;
 }
 
 nav ul li a {
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: var(--text-color);
-  padding: 0.5rem;
+  padding: 0.75rem;
   cursor: pointer;
   letter-spacing: 1px;
+  transition: 0.15s ease-in-out;
+  text-transform: uppercase;
 }
 
 /* #29741d */
@@ -69,6 +74,14 @@ nav ul li a {
 nav ul li a:hover {
   color: seagreen;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+  text-decoration: underline;
+}
+
+.nav-open ,.nav-close{
+  font-size: 1.6rem;
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
 }
 
 section {

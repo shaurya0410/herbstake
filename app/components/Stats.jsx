@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import "../Stats.css";
-const TOTAL_SUPPLY = "1000000.0000 HERB";
+const TOTAL_SUPPLY = "1160000.0000 HERB";
 const Stats = ({ info, parse_numbers }) => {
   return (
     <div className="stats_box">

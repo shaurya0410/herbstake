@@ -366,7 +366,7 @@ const wax_top_stakers_data = async () => {
       scope: contract,
       table: "stakes",
       // lower_bound: _owner,
-      limit: 500,
+      limit: 100,
       reverse: false,
       show_payer: false,
     });

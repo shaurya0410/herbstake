@@ -20,7 +20,7 @@ const Tokenomics = () => {
           </div>
           <div>
             <span>Circulating Supply:</span>
-            <span>1,000,000 HERB</span>
+            <span>1,160,000 HERB</span>
           </div>
           <div>
             <span>Max Supply:</span>
