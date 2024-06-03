@@ -34,11 +34,11 @@ const RichListPage = async () => {
   return (
     <>
       <div className="richlist">
-        <span>RANK</span>
-        <span>WALLET</span>
-        <span>BALANCE</span>
-        <span>STAKED</span>
-        <span>SHARE</span>
+        <span>Rank</span>
+        <span>Wallet</span>
+        <span>Balance</span>
+        <span>Staked</span>
+        <span>Share</span>
       </div>
       {/* ---data-- */}
       {rich
@@ -63,6 +63,7 @@ const RichListPage = async () => {
             </div>
           );
         })}
+        <div style={{marginBottom:'5rem'}}></div>
     </>
   );
 };

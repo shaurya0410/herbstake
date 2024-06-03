@@ -28,9 +28,9 @@ export default function RootLayout({ children }) {
             <li>
               <Link href={"/tokenomics"}>TOKENOMICS</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href={"/richlist"}>RICHLIST</Link>
-            </li>
+            </li> */}
           </ul>
             {/* <i className="fa-solid fa-xmark nav-close"></i>
           <i className="fa-solid fa-bars nav-open"></i> */}
