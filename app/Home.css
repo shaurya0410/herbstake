@@ -194,11 +194,11 @@ section {
   flex-direction: column;
   width: 16rem;
   height: 16rem;
-  padding: 2rem;
+  padding: 1rem;
   margin: 1rem;
   border-radius: 16px;
   text-decoration: none;
-  background-image: linear-gradient(90deg, #0097b2, #7ed957);
+  background-image: linear-gradient(90deg, #0097b26d, #7ed9579a );
 }
 
 #section-2 .box a:hover {
@@ -206,14 +206,14 @@ section {
 }
 
 #section-2 .box a span {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   color: white;
   font-weight: bold;
   letter-spacing: 1px;
 }
 
 #section-2 .box a p {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.7);
   letter-spacing: 1px;
   text-align: center;

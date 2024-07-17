@@ -25,9 +25,9 @@ export default function RootLayout({ children }) {
             <li>
               <Link href={"/stake"}>STAKE</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href={"/tokenomics"}>TOKENOMICS</Link>
-            </li>
+            </li> */}
             {/* <li>
               <Link href={"/richlist"}>RICHLIST</Link>
             </li> */}

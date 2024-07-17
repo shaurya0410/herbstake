@@ -59,7 +59,7 @@ const RichListPage = async () => {
               </span>
               <span>{M(e.balance)}</span>
               <span>{M(e.staked)}</span>
-              <span>{((e.total / 1160000) * 100).toFixed(2)}%</span>
+              <span>{((e.total / 1320000) * 100).toFixed(2)}%</span>
             </div>
           );
         })}
