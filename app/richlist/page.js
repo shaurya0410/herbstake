@@ -102,10 +102,11 @@ const wax_top_stakers_data = async () => {
       scope: "stake.herb",
       table: "stakes",
       // lower_bound: _owner,
-      limit: 500,
+      limit: 200,
       reverse: false,
       show_payer: false,
     });
+    // console.log(data);
     let newData = [];
     data.rows.forEach((element) => {
       let array = element.quantity.split(" ");

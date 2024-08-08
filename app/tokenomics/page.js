@@ -61,7 +61,8 @@ const Tokenomics = () => {
             <span>Reserve Fund</span>
             <span>15%</span>
           </div>
-          <small className="token_distribution_note">
+          
+         <small className="token_distribution_note">
             This distribution plan outlines how HERB will be allocated over a
             25-months period, with 160,000 HERB being allocated each month. Each
             category receives a percentage of the monthly allocation as
