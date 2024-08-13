@@ -453,7 +453,7 @@ function calculateClaim(staked_amount, last_claim) {
   let current_time = Date.now();
   let elapsed_time = (current_time - parseInt(last_claim)) / 1000;
   // const apy = 0.1; // 10% APY
-  const reward_per_second = 0.08 / 365 / 24 / 60 / 60; // APY converted to per second
+  const reward_per_second = 0.07 / 365 / 24 / 60 / 60; // APY converted to per second
   let claim_amount = staked_amount * reward_per_second * elapsed_time;
   return claim_amount;
 }
