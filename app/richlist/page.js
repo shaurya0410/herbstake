@@ -184,7 +184,7 @@ const RichListPage = () => {
       {/* Render data */}
       {rich
         .sort((a, b) => b.total - a.total)
-        .slice(1, 101)
+        .slice(0, 100)
         .map((e, i) => (
           <div className="richlist_data" key={e.wallet}>
             <span>#{i + 1}</span>
