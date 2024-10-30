@@ -199,7 +199,7 @@ const RichListPage = () => {
             </span>
             <span>{formatLargeNumber(e.balance)}</span>
             <span>{formatLargeNumber(e.staked)}</span>
-            <span>{((e.total / 1320000) * 100).toFixed(2)}%</span>
+            <span>{((e.total / 1000000) * 100).toFixed(2)}%</span>
           </div>
         ))}
       <div style={{ marginBottom: "5rem" }}></div>
