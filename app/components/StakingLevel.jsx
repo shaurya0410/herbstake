@@ -67,14 +67,14 @@ const StakingLevel = () => {
           <td>17.5k</td>
           <td>25k</td>
         </tr>
-        <tr>
+        {/* <tr>
           <th>Mining Multiplier</th>
           <td>1.05x</td>
           <td>1.1x</td>
           <td>1.2x</td>
           <td>1.35x</td>
           <td>1.5x</td>
-        </tr>
+        </tr> */}
         <tr>
         <th>Credit Discount</th>
           <td>5%</td>

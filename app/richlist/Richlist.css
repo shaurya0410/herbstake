@@ -1,5 +1,5 @@
 .richlist {
-  color: rgb(3 255 146 );
+  color: rgb(3 255 146);
   margin: 5rem 2rem;
   margin-bottom: 0.5rem;
   display: grid;
@@ -12,6 +12,7 @@
   font-family: monospace;
   border: 1px solid rgb(255, 255, 255, 0.25);
   box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.25);
+  margin-top: 90px;
 }
 
 .richlist_data {
@@ -26,7 +27,34 @@
   box-shadow: 2px 2px 5px rgba(66, 151, 207, 0.25);
 }
 
-.richlist_data span a{
+.richlist_data span a {
   color: white;
   text-decoration: none;
+}
+
+#filter {
+  border: 1px solid rgb(74, 152, 182);
+  border-left: none;
+  border-bottom: none;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  /* margin: 5px; */
+  /* padding: 5px; */
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 55px;
+  right: 20px;
+  font-weight: lighter;
+}
+
+#filter div{
+  padding: 0px 5px;
+  margin: 0px 5px;
+  font-size: large;
+}
+
+#filter div input {
+ cursor: pointer;
 }
