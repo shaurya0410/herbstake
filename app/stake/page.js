@@ -16,6 +16,7 @@ import AnchorLink from "anchor-link";
 import AnchorLinkBrowserTransport from "anchor-link-browser-transport";
 import StakingLevel from "../components/StakingLevel";
 import Staking from "../components/Staking";
+import CouponPage from "../components/Coupon";
 
 const transport = new AnchorLinkBrowserTransport();
 const link = new AnchorLink({
@@ -224,7 +225,6 @@ const StakingPage = () => {
           </button>
         )}
       </div>
-
       {staked != -1 ? (
         <Staking
           isuser={isuser}
@@ -297,6 +297,17 @@ const StakingPage = () => {
           wax={wax}
         />
       )}
+
+      {/* <hr
+        style={{
+          color: "white",
+          opacity: "0.5",
+          width: "80vw",
+          margin: "1rem",
+        }}
+      /> */}
+      {/* <h2>Coupon</h2>
+      <CouponPage/> */}
     </div>
   );
 };

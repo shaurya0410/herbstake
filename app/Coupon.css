@@ -1,0 +1,105 @@
+input,
+select {
+  margin: 0.5rem;
+  padding: 0rem 0.5rem;
+  width: 90%;
+  /* height: 80%; */
+  min-height: 2.6rem;
+  border: none;
+  outline: none;
+  font-size: 1.4rem;
+  background: white;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+}
+
+#hash{
+  overflow: scroll;
+}
+
+.copybtn {
+  background-color: lightslategray;
+}
+
+.generatedCode_section small {
+  color: #ff0000;
+}
+
+.generatedCode_section label {
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.generatedCode_section input {
+  /* font-size: 1.2rem; */
+  font-weight: bold;
+  color: darkslategrey;
+}
+
+select {
+  color: lightslategray;
+  font-weight: bold;
+  width: 97%;
+}
+
+input,
+select ::placeholder {
+  color: lightslategray;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+button {
+  margin: 1rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  padding: 0.5rem 2rem;
+  border-radius: 6rem;
+  border: none;
+  /* background: green; */
+  color: white;
+  background: lightseagreen;
+  color: azure;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.coupon_card {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  /* background: lightseagreen; */
+  /* border: 1px solid white; */
+  margin: 1rem;
+  padding: 2px;
+}
+
+.generate_section,
+.generatedCode_section {
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+}
+
+.generate_section button {
+  background-color: #50c878; /* Emerald */
+  /* color: white; */
+}
+
+.coupon_box {
+  width: 40rem;
+  border: 1px solid white;
+  justify-content: center;
+  align-items: center;
+  margin: 5rem auto;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

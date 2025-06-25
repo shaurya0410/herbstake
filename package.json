@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@waxio/waxjs": "^1.7.1",
+    "@wharfkit/session": "^1.6.0",
+    "@wharfkit/wallet-plugin-anchor": "^1.5.0",
+    "@wharfkit/web-renderer": "^1.4.1",
     "anchor-link": "^3.5.1",
     "anchor-link-browser-transport": "^3.5.1",
     "chart.js": "^4.4.3",
