@@ -20,7 +20,7 @@ const CouponPage = () => {
 
   const [token, setToken] = useState("WAX");
   const [gen, setGen] = useState({ code: "", hash: "" });
-  const [copied, setCopied] = useState(false);
+  // const [copied, setCopied] = useState(false);
   return (
     <div className="coupon_box">
       <div className="redeem_section coupon_card">
@@ -160,7 +160,7 @@ const CouponPage = () => {
           </ol>
 
           <p style={{ color: "#cc0000", fontSize: "12px", marginTop: "8px" }}>
-            ⚠️ This gift code won't work until you complete the activation step.
+            ⚠️ This gift code won&apos;t work until you complete the activation step.
           </p>
         </div>
       </div>

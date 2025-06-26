@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import "../Calculator.css";
+
 const Calculator = ({info}) => {
   const handleCalculate = async () => {
     const reward_per_second = info.base_apr/100 / 365 / 24 / 60 / 60; // APY converted to per second
@@ -36,7 +38,8 @@ const Calculator = ({info}) => {
               onChange(e);
             }}
           />
-          <img src="HERB.png" alt="" />
+          {/* <img src="HERB.png" alt="" /> */}
+          <img src="/HERB.png" alt=""/>
         </div>
         {/* <div className="calc_input_item">
           <span>USD</span>
