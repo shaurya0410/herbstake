@@ -147,15 +147,7 @@ const CouponPage = () => {
               transfer.
             </li>
             <li>
-              Visit:{" "}
-              <a
-                href="https://waxblock.io/account/gift.herb?action=add#contract-actions"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#0070f3", textDecoration: "underline" }}
-              >
-                waxblock.io 🔗
-              </a>
+              GiftCode is ready to share.
             </li>
           </ol>
 
