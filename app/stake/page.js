@@ -16,7 +16,8 @@ import AnchorLink from "anchor-link";
 import AnchorLinkBrowserTransport from "anchor-link-browser-transport";
 import StakingLevel from "../components/StakingLevel";
 import Staking from "../components/Staking";
-import CouponPage from "../components/Coupon";
+
+// import CouponPage from "../components/Coupon";
 
 const transport = new AnchorLinkBrowserTransport();
 const link = new AnchorLink({
@@ -54,9 +55,10 @@ const StakingPage = () => {
   const [isuser, setIsUser] = useState(false);
   const [topstakers, setTopstakers] = useState([]);
   const [user, setUser] = useState({
-    owner: "",
-    balance: "0",
+    owner: "...",
+    balance: 0,
   });
+  // const [user, setUser] = useState("...");
 
   async function getInitialData(params) {
     let [top, info] = await Promise.all([wax_top_stakers_data(), wax_info()]);
@@ -108,6 +110,7 @@ const StakingPage = () => {
         owner,
         balance,
       }));
+      // setUser(owner);
     } catch (error) {
       alert(error);
     }
@@ -119,6 +122,7 @@ const StakingPage = () => {
       owner: "",
       balance: "0",
     });
+      // setUser("...");
     setClaim(0);
     setUnlockCooldown(0);
     setLastClaim(0);
@@ -191,7 +195,6 @@ const StakingPage = () => {
   return (
     <div className="staking_container">
       <div className="wallet_balance">
-        {/* <span>Balance:</span> */}
         <span>{`${user.balance} HERB`}</span>
       </div>
       <div className="wallet_box">
@@ -200,6 +203,9 @@ const StakingPage = () => {
             className="btn"
             onClick={() => {
               setLoginModal(true);
+              // setTimeout(async () => {
+              //   getData(user.owner);
+              // }, 4000);
             }}
           >
             {`connect`}
@@ -290,6 +296,7 @@ const StakingPage = () => {
         <Login
           setLoginModal={setLoginModal}
           getData={getData}
+          setUser={setUser}
           setSession={setSession}
           setIsUser={setIsUser}
           setWallet={setWallet}

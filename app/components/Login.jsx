@@ -6,11 +6,13 @@ const Login = ({
   setLoginModal,
   setWallet,
   getData,
+  setUser,
   setIsUser,
   link,
   setSession,
   wax,
 }) => {
+  // console.log(typeof getData);
   return (
     <div className="login_wrapper">
       <div className="login_box">
@@ -23,7 +25,8 @@ const Login = ({
           X
         </span>
         <h2 className="wallet_heading">Select Wallet</h2>
-        <button type="button"
+        <button
+          type="button"
           className="cw"
           onClick={async () => {
             try {
@@ -31,8 +34,17 @@ const Login = ({
               if (isAutoLoginAvailable) {
                 setIsUser(true);
                 // alert(`${wax.userAccount} connected`);
-                getData(wax.userAccount);
+                // getData(wax.userAccount);
+                if (typeof getData === "function") {
+                  getData(wax.userAccount);
+                }
                 setWallet("wax");
+                // setUser(wax.userAccount);
+                setUser((previous_obj) => ({
+                  ...previous_obj,
+                  owner: wax.userAccount,
+                }));
+
                 setLoginModal(false);
               } else {
                 const nonce = identifier;
@@ -40,8 +52,16 @@ const Login = ({
                 if (wax.proofVerified) {
                   setIsUser(true);
                   // alert(`${userAccount} connected`);
-                  getData(wax.userAccount);
+                  // getData(wax.userAccount);
                   setWallet("wax");
+                  if (typeof getData === "function") {
+                    getData(wax.userAccount);
+                  }
+                  // setUser(wax.userAccount);
+                  setUser((previous_obj) => ({
+                    ...previous_obj,
+                    owner: wax.userAccount,
+                  }));
                   setLoginModal(false);
                 }
               }
@@ -65,8 +85,16 @@ const Login = ({
                 .then((result) => {
                   setSession(result.session);
                   setIsUser(true);
-                  getData(result.session.auth.actor);
+                  // getData(result.session.auth.actor);
                   setWallet("anchor");
+                  if (typeof getData === "function") {
+                    getData(result.session.auth.actor);
+                  }
+                  // setUser(result.session.auth.actor);
+                  setUser((previous_obj) => ({
+                    ...previous_obj,
+                    owner: result.session.auth.actor,
+                  }));
                   setLoginModal(false);
                 })
                 .catch((error) => {

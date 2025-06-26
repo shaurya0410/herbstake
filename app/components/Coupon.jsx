@@ -1,162 +1,397 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import "../Coupon.css";
+import Login from "../components/Login";
+import * as waxjs from "@waxio/waxjs/dist";
+const wax = new waxjs.WaxJS({
+  rpcEndpoint: "https://wax.greymass.com",
+  // tryAutoLogin: false,
+});
 
+import AnchorLink from "anchor-link";
+import AnchorLinkBrowserTransport from "anchor-link-browser-transport";
+
+const transport = new AnchorLinkBrowserTransport();
+const link = new AnchorLink({
+  transport,
+  chains: [
+    {
+      chainId:
+        "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4",
+      nodeUrl: "https://wax.greymass.com",
+    },
+  ],
+});
 const CouponPage = () => {
-  // const onChange = (e) => {
-  //   let amount = e.target.value;
-  //   if (amount <= 0) {
-  //     amount = 1;
-  //   }
-  //   setAmount(amount);
-  // };
+  const [loginModal, setLoginModal] = useState(false);
+  const [wallet, setWallet] = useState("wax"); //anchor
+  const [session, setSession] = useState("");
+  const [isuser, setIsUser] = useState(false);
+  // const [topstakers, setTopstakers] = useState([]);
+  // const [user, setUser] = useState('...');
+  const [user, setUser] = useState({
+    owner: "...",
+    balance: "0",
+  });
 
-  // const [amount, setAmount] = useState(1);
+  const onChangeRC = (e) => {
+    let code = e.target.value;
+    setRedeemCode(code);
+  };
+
+  const [amount, setAmount] = useState(0);
 
   const onTokenChange = (e) => {
     let token = e.target.value;
     setToken(token);
   };
 
+  const onChange = (e) => {
+    let amount = e.target.value;
+    if (amount <= 0) {
+      setAmount(0);
+    } else {
+      setAmount(amount);
+    }
+  };
+
+  const [redeemCode, setRedeemCode] = useState("");
   const [token, setToken] = useState("WAX");
   const [gen, setGen] = useState({ code: "", hash: "" });
-  // const [copied, setCopied] = useState(false);
+
+  const wax_transact_redeem = async (_owner, _giftcode) => {
+    try {
+      if (wallet == "wax") {
+        const result = await wax.api.transact(
+          {
+            actions: [
+              {
+                account: "gift.herb",
+                name: "claim",
+                authorization: [
+                  {
+                    actor: _owner,
+                    permission: "active",
+                  },
+                ],
+                data: {
+                  user: _owner,
+                  giftcode: _giftcode,
+                },
+              },
+            ],
+          },
+          {
+            blocksBehind: 3,
+            expireSeconds: 1200,
+          }
+        );
+
+        return { value: 1, message: result.transaction_id };
+      } else {
+        const action = {
+          account: "gift.herb",
+          name: "claim",
+          authorization: [session.auth],
+          data: {
+            user: _owner,
+            giftcode: _giftcode,
+          },
+        };
+
+        const tx = await session.transact({ action });
+        return { value: 1, message: tx.processed.id };
+      }
+    } catch (error) {
+      // return -1;
+      return { value: -1, message: error.message };
+    }
+  };
+
+  const wax_transact_generate = async (
+    _owner,
+    _quantity,
+    _code_hash,
+    _symbol
+  ) => {
+    let contract = _symbol == "HERB" ? "naturestoken" : "eosio.token";
+    let decimal = _symbol == "HERB" ? "4" : "8";
+
+    try {
+      if (wallet == "wax") {
+        const result = await wax.api.transact(
+          {
+            actions: [
+              {
+                account: contract,
+                name: "transfer",
+                authorization: [
+                  {
+                    actor: _owner,
+                    permission: "active",
+                  },
+                ],
+                data: {
+                  from: _owner,
+                  to: "gift.herb",
+                  quantity: `${parseFloat(_quantity).toFixed(
+                    decimal
+                  )} ${_symbol}`,
+                  memo: _code_hash,
+                },
+              },
+            ],
+          },
+          {
+            blocksBehind: 3,
+            expireSeconds: 1200,
+          }
+        );
+
+        return { value: 1, message: result.transaction_id };
+      } else {
+        const action = {
+          account: contract,
+          name: "transfer",
+          authorization: [session.auth],
+          data: {
+            from: _owner,
+            to: "gift.herb",
+            quantity: `${parseFloat(_quantity).toFixed(decimal)} ${_symbol}`,
+            memo: _code_hash,
+          },
+        };
+
+        const tx = await session.transact({ action });
+        return { value: 1, message: tx.processed.id };
+      }
+    } catch (error) {
+      // return -1;
+      return { value: -1, message: error.message };
+    }
+  };
+
   return (
-    <div className="coupon_box">
-      <div className="redeem_section coupon_card">
-        {/* <input type="text" placeholder="wallet" /> */}
-        <input type="text" placeholder="HERB-KD7FRY-PLX9ZT" />
-        <button
-          onClick={() => {
-            alert(
-              "✅ currently disabled! go to -> https://waxblock.io/account/gift.herb?action=claim#contract-actions "
-            );
-            // alert("✅ claimed successfully!");
-          }}
-        >
-          redeem
-        </button>
-      </div>
-      <div className="generate_section coupon_card">
-        {/* <input
-          type="number"
-          name=""
-          id=""
-          placeholder="100"
-          value={amount}
-          onChange={(e) => {
-            onChange(e);
-          }}
-        /> */}
-        <select
-          id="gift_token"
-          name="token"
-          value={token}
-          onChange={(e) => {
-            onTokenChange(e);
-          }}
-        >
-          <option value="wax">WAX</option>
-          <option value="herb">HERB</option>
-        </select>
-        <button
-          onClick={async () => {
-            // Example usage:
-            let code = generateGiftCode(token); // ➤ HERB-KD7FR-PLX9Z
-            setGen({ code: code, hash: await oneWayHash(code) });
-          }}
-        >
-          generate
-        </button>
-      </div>
-
-      <div className="generatedCode_section coupon_card">
-        <label htmlFor="">HASH:</label>
-        <input
-          id="hash"
-          type="text"
-          value={gen.hash}
-          disabled
-          placeholder="..."
-        />
-
-        <label htmlFor="">GIFTCODE:</label>
-        <input type="text" value={gen.code} disabled placeholder="..." />
-        <div>
+    <>
+      <div className="wallet_box">
+        {!isuser ? (
           <button
-            className="copybtn"
+            className="btn"
             onClick={() => {
-              copyGiftCode(gen.hash);
+              setLoginModal(true);
             }}
-            disabled={!gen.hash}
           >
-            copy hash
+            {`connect`}
           </button>
+        ) : (
           <button
-            className="copybtn"
-            onClick={() => {
-              copyGiftCode(gen.code);
+            className="btn"
+            onClick={async () => {
+              try {
+                wax.logout();
+                if (session) {
+                  session.remove();
+                }
+                setIsUser(false);
+                // reset();
+                // setWallet("");
+              } catch (error) {
+                console.log(error);
+              }
             }}
-            disabled={!gen.code}
           >
-            copy code
+            {`${user.owner}`}
+          </button>
+        )}
+      </div>
+
+      <div className="coupon_box">
+        <div className="redeem_section coupon_card">
+          {/* <input type="text" placeholder="wallet" /> */}
+          <input
+            type="text"
+            placeholder="HERB-KD7FRY-PLX9ZT"
+            value={redeemCode}
+            onChange={onChangeRC}
+          />
+          <button
+            onClick={async () => {
+              try {
+                // console.log(user.owner=='...');
+                if (user.owner == "...") {
+                  alert("connect wallet!");
+                  return;
+                } else {
+                  let tx = await wax_transact_redeem(user.owner, redeemCode);
+                  if (tx.value != -1) {
+                    alert(`claimed! ✅`);
+                  } else {
+                    alert(tx.message);
+                  }
+                }
+              } catch (error) {
+                alert(error);
+              }
+            }}
+          >
+            redeem
           </button>
         </div>
-        <small>
-          🔐 Your gift code is private and won’t be stored.{" "}
-          <strong>Save it now.</strong>
-        </small>
-      </div>
-      <div>
-        <div
-          className=""
-          style={{
-            border: "none",
-            borderTop: "2px solid rgba(255, 255, 255, 0.5)",
-            padding: "1rem",
-            borderRadius: "8px",
-            background: "black",
-            maxWidth: "600px",
-            fontFamily: "Arial, sans-serif",
-            fontSize: "14px",
-          }}
-        >
-          <p
+        <div className="generate_section coupon_card">
+          <input
+            type="number"
+            name=""
+            id=""
+            value={amount}
+            onChange={(e) => {
+              onChange(e);
+            }}
+          />
+          <select
+            id="gift_token"
+            name="token"
+            value={token}
+            onChange={(e) => {
+              onTokenChange(e);
+            }}
+          >
+            <option value="WAX">WAX</option>
+            <option value="HERB">HERB</option>
+          </select>
+          <button
+            onClick={async () => {
+              try {
+                // console.log(user.owner=='...');
+                if (user.owner == "...") {
+                  alert("connect wallet!");
+                  return;
+                } else {
+                  // Example usage:
+                  let code = generateGiftCode(token); // ➤ HERB-KD7FR-PLX9Z
+                  let hash = (await oneWayHash(code)).toString();
+                  console.log(hash);
+                  let tx = await wax_transact_generate(
+                    user.owner,
+                    amount,
+                    hash,
+                    token
+                  );
+                  if (tx.value != -1) {
+                    setGen({ code: code, hash: hash });
+                    alert(`Generated new code! ✅`);
+                  } else {
+                    alert(tx.message);
+                  }
+                }
+              } catch (error) {
+                alert(error);
+              }
+            }}
+          >
+            generate
+          </button>
+        </div>
+
+        <div className="generatedCode_section coupon_card">
+          {/* <label htmlFor="">HASH:</label>
+          <input
+            id="hash"
+            type="text"
+            value={gen.hash}
+            disabled
+            placeholder="..."
+          /> */}
+
+          <label htmlFor="">GIFTCODE:</label>
+          <input type="text" value={gen.code} disabled placeholder="..." />
+          <div>
+            {/* <button
+              className="copybtn"
+              onClick={() => {
+                copyGiftCode(gen.hash);
+              }}
+              disabled={!gen.hash}
+            >
+              copy hash
+            </button> */}
+            <button
+              className="copybtn"
+              onClick={() => {
+                copyGiftCode(gen.code);
+              }}
+              disabled={!gen.code}
+            >
+              copy
+            </button>
+          </div>
+          <small>
+            🔐 Your gift code is private and won’t be stored.{" "}
+            <strong>Save it now.</strong>
+          </small>
+        </div>
+        {/* <div>
+          <div
+            className=""
             style={{
-              fontWeight: "bold",
-              fontSize: "16px",
-              marginBottom: "0.5rem",
+              border: "none",
+              borderTop: "2px solid rgba(255, 255, 255, 0.5)",
+              padding: "1rem",
+              borderRadius: "8px",
+              background: "black",
+              maxWidth: "600px",
+              fontFamily: "Arial, sans-serif",
+              fontSize: "14px",
             }}
           >
-            🔒 Activate Your Gift Code
-          </p>
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "16px",
+                marginBottom: "0.5rem",
+              }}
+            >
+              🔒 Activate Your Gift Code
+            </p>
 
-          <ol style={{ paddingLeft: "1.2rem", marginBottom: "1rem" }}>
-            <li>
-              Copy the generated <strong>hash</strong> above.
-            </li>
-            <li>
-              Send a deposit to{" "}
-              <code style={{ padding: "2px 4px", borderRadius: "4px" }}>
-                gift.herb
-              </code>{" "}
-              with your desired amount.
-            </li>
-            <li>
-              Paste the copied hash as the <strong>memo</strong> in the
-              transfer.
-            </li>
-            <li>
-              GiftCode is ready to share.
-            </li>
-          </ol>
+            <ol style={{ paddingLeft: "1.2rem", marginBottom: "1rem" }}>
+              <li>
+                Copy the generated <strong>hash</strong> above.
+              </li>
+              <li>
+                Send a deposit to{" "}
+                <code style={{ padding: "2px 4px", borderRadius: "4px" }}>
+                  gift.herb
+                </code>{" "}
+                with your desired amount.
+              </li>
+              <li>
+                Paste the copied hash as the <strong>memo</strong> in the
+                transfer.
+              </li>
+              <li>GiftCode is ready to share.</li>
+            </ol>
 
-          <p style={{ color: "#cc0000", fontSize: "12px", marginTop: "8px" }}>
-            ⚠️ This gift code won&apos;t work until you complete the activation step.
-          </p>
-        </div>
+            <p style={{ color: "#cc0000", fontSize: "12px", marginTop: "8px" }}>
+              ⚠️ This gift code won&apos;t work until you complete the
+              activation step.
+            </p>
+          </div>
+        </div> */}
       </div>
-    </div>
+
+      {loginModal && (
+        <Login
+          setLoginModal={setLoginModal}
+          // getData={getData}
+          setUser={setUser}
+          setSession={setSession}
+          setIsUser={setIsUser}
+          setWallet={setWallet}
+          link={link}
+          wax={wax}
+        />
+      )}
+    </>
   );
 };
 

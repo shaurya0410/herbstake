@@ -14,7 +14,19 @@ select {
   border-radius: 8px;
 }
 
-#hash{
+.generate_section input {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: darkslategray;
+}
+
+.redeem_section input {
+  color: darkgreen;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+#hash {
   overflow: scroll;
 }
 
@@ -35,13 +47,13 @@ select {
 .generatedCode_section input {
   /* font-size: 1.2rem; */
   font-weight: bold;
-  color: darkslategrey;
+  /* color: darkslategrey; */
 }
 
 select {
-  color: lightslategray;
+  /* color:darkolivegreen; */
   font-weight: bold;
-  width: 97%;
+  width: 94%;
 }
 
 input,
@@ -93,6 +105,7 @@ button {
   justify-content: center;
   align-items: center;
   margin: 5rem auto;
+  margin-top: 8rem;
   padding: 1rem;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.5);
