@@ -74,13 +74,15 @@ const CouponPage = () => {
 
   const generateBatchCodes = async (token, count) => {
     let result = [];
+    let hashArray = [];
     for (let i = 0; i < count; i++) {
       let code = generateGiftCode(token);
       let hash = await oneWayHash(code);
       result.push({ code, hash });
+      hashArray.push(hash);
     }
     setCodes(result);
-    return codes.map((item) => item.hash).join(",");
+    return hashArray.join(","); // Return comma-separated hash string
   };
 
   const wax_transact_redeem = async (_owner, _giftcode) => {
