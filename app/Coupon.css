@@ -39,9 +39,13 @@ select {
 }
 
 .generatedCode_section label {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   letter-spacing: 2px;
+  margin: 1rem;
+  text-decoration: underline;
+  background: rgba(25, 252, 0, 0.259);
+  letter-spacing: 4px;
 }
 
 .generatedCode_section input {
@@ -92,6 +96,35 @@ button {
 .generatedCode_section {
   border-top: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 8px;
+}
+
+.giftcode_box{
+  display: flex;
+  /* border: 1px solid white; */
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+}
+
+.giftcode_box input{
+  max-width: 40rem;
+  background: #000;
+  color: rgb(18, 200, 200);
+  padding: 0rem;
+  letter-spacing: 2px;
+  /* font-style: italic; */
+  font-family:cursive;
+}
+
+.giftcode_box button{
+  max-width: 7rem;
+  font-size: 1rem;
+  margin: 0.75rem 0.5rem;
+  padding: 0.5rem 1.5rem;
+  background: #000;
+  border: 1px solid white;
+  border-radius: 12px;
+  font-weight: bold;
 }
 
 .generate_section button {

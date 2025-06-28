@@ -10,6 +10,7 @@ const wax = new waxjs.WaxJS({
 
 import AnchorLink from "anchor-link";
 import AnchorLinkBrowserTransport from "anchor-link-browser-transport";
+import GiftCode from "./GiftCode";
 
 const transport = new AnchorLinkBrowserTransport();
 const link = new AnchorLink({
@@ -39,7 +40,7 @@ const CouponPage = () => {
     setRedeemCode(code);
   };
 
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState();
 
   const onTokenChange = (e) => {
     let token = e.target.value;
@@ -55,9 +56,32 @@ const CouponPage = () => {
     }
   };
 
+  const onCountChange = (e) => {
+    let amount = e.target.value;
+    if (amount < 1 || amount > 10) {
+      setCount(1);
+    } else {
+      setCount(amount);
+    }
+  };
+
   const [redeemCode, setRedeemCode] = useState("");
   const [token, setToken] = useState("WAX");
-  const [gen, setGen] = useState({ code: "", hash: "" });
+  // const [gen, setGen] = useState({ code: "", hash: "" });
+  const [codes, setCodes] = useState([]);
+  const [count, setCount] = useState(); // number of codes to generate
+  const [success, setSuccess] = useState(0);
+
+  const generateBatchCodes = async (token, count) => {
+    let result = [];
+    for (let i = 0; i < count; i++) {
+      let code = generateGiftCode(token);
+      let hash = await oneWayHash(code);
+      result.push({ code, hash });
+    }
+    setCodes(result);
+    return codes.map((item) => item.hash).join(",");
+  };
 
   const wax_transact_redeem = async (_owner, _giftcode) => {
     try {
@@ -241,11 +265,11 @@ const CouponPage = () => {
           <input
             type="number"
             name=""
-            id=""
             value={amount}
             onChange={(e) => {
               onChange(e);
             }}
+            placeholder="amount"
           />
           <select
             id="gift_token"
@@ -258,6 +282,13 @@ const CouponPage = () => {
             <option value="WAX">WAX</option>
             <option value="HERB">HERB</option>
           </select>
+          {/* <label htmlFor="">count</label> */}
+          <input
+            type="number"
+            value={count}
+            onChange={onCountChange}
+            placeholder="no. of codes"
+          />
           <button
             onClick={async () => {
               try {
@@ -267,18 +298,20 @@ const CouponPage = () => {
                   return;
                 } else {
                   // Example usage:
-                  let code = generateGiftCode(token); // ➤ HERB-KD7FR-PLX9Z
-                  let hash = (await oneWayHash(code)).toString();
-                  console.log(hash);
+                  // let code = generateGiftCode(token); // ➤ HERB-KD7FR-PLX9Z
+                  // let hash = (await oneWayHash(code)).toString();
+                  const memoString = await generateBatchCodes(token, count);
+                  console.log(memoString);
                   let tx = await wax_transact_generate(
                     user.owner,
                     amount,
-                    hash,
+                    memoString,
                     token
                   );
                   if (tx.value != -1) {
-                    setGen({ code: code, hash: hash });
-                    alert(`Generated new code! ✅`);
+                    // setGen({ code: code, hash: hash });
+                    setSuccess(1);
+                    alert(`Code generated! ✅`);
                   } else {
                     alert(tx.message);
                   }
@@ -293,37 +326,15 @@ const CouponPage = () => {
         </div>
 
         <div className="generatedCode_section coupon_card">
-          {/* <label htmlFor="">HASH:</label>
-          <input
-            id="hash"
-            type="text"
-            value={gen.hash}
-            disabled
-            placeholder="..."
-          /> */}
-
           <label htmlFor="">GIFTCODE:</label>
-          <input type="text" value={gen.code} disabled placeholder="..." />
-          <div>
-            {/* <button
-              className="copybtn"
-              onClick={() => {
-                copyGiftCode(gen.hash);
-              }}
-              disabled={!gen.hash}
-            >
-              copy hash
-            </button> */}
-            <button
-              className="copybtn"
-              onClick={() => {
-                copyGiftCode(gen.code);
-              }}
-              disabled={!gen.code}
-            >
-              copy
-            </button>
-          </div>
+          {success ? (
+            codes.map((item, index) => (
+              <GiftCode code={item.code} key={index} />
+            ))
+          ) : (
+            <GiftCode code={"..."} />
+          )}
+
           <small>
             🔐 Your gift code is private and won’t be stored.{" "}
             <strong>Save it now.</strong>
@@ -416,17 +427,6 @@ function generateGiftCode(prefix) {
   // Split into readable parts
   const formattedCode = code.slice(0, 6) + "-" + code.slice(6);
   return `${prefix.toUpperCase()}-${formattedCode}`;
-}
-
-function copyGiftCode(code) {
-  navigator.clipboard
-    .writeText(code)
-    .then(() => {
-      alert("Copied to clipboard!");
-    })
-    .catch((err) => {
-      alert("Failed to copy: " + err);
-    });
 }
 
 export default CouponPage;
