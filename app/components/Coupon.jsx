@@ -50,7 +50,7 @@ const CouponPage = () => {
   const onChange = (e) => {
     let amount = e.target.value;
     if (amount <= 0) {
-      setAmount(0);
+      setAmount('');
     } else {
       setAmount(amount);
     }
@@ -58,8 +58,8 @@ const CouponPage = () => {
 
   const onCountChange = (e) => {
     let amount = e.target.value;
-    if (amount < 1 || amount > 10) {
-      setCount(1);
+    if (amount < 1 || amount > 3) {
+      setCount('');
     } else {
       setCount(amount);
     }
